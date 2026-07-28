@@ -1,0 +1,18 @@
+{
+  "name": "hw-creative",
+  "metadata": {
+    "description": "Automacoes de producao de criativo da H&W Publishing. Edicao de UGC 9:16 a partir do bruto de avatar: B-roll gerado sob medida, inserts ancorados na fala, punch-ins, legenda conferida contra a copy e timeline no Premiere."
+  },
+  "owner": {
+    "name": "H&W Publishing - RO Edicao de Video"
+  },
+  "plugins": [
+    {
+      "name": "editor-broll",
+      "description": "Edita criativo UGC 9:16 a partir do bruto de um avatar falante em plano fixo. Gera B-roll da mesma pessoa em roupas diferentes, encaixa inserts nos pontos exatos da fala, aplica punch-ins, legenda conferindo palavra a palavra contra a copy, e entrega projeto do Premiere editavel com marcacoes.",
+      "author": { "name": "H&W Publishing" },
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

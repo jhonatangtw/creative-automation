@@ -1,0 +1,102 @@
+# Armadilhas — todas descobertas na prática, custaram tempo real
+
+## Whisper
+
+**Não forçar `--language`.** O body pode estar em inglês mesmo com copy PT-BR no documento. Forçar `pt` num áudio inglês faz o modelo "ouvir" português onde não há: `matchá`→"mancha", `Mounjaro`→"manjarra", `burning fat`→"fatia". O timing continua certo, o texto vira lixo.
+
+**Sempre diffar contra a copy.** O `large-v3` acerta o timing mas erra nome próprio e às vezes picota frase. Num vídeo de 414 palavras escaparam 4 erros: `MOUNJARO`→"MANJARO" (2×), `following this`→"follow-up", `100%`→"100 %". Corrigir o **texto** pela copy e manter o **timing** do Whisper.
+
+```python
+import difflib
+sm = difflib.SequenceMatcher(None, palavras_doc, palavras_srt)
+for tag,i1,i2,j1,j2 in sm.get_opcodes():
+    if tag != 'equal': print(tag, doc[i1:i2], '->', srt[j1:j2])
+```
+
+**Sobreposição de blocos.** Se você aplicar duração mínima por bloco, clampar depois: `fim = min(fim, inicio_do_proximo)`. Sem isso dois blocos aparecem juntos e a legenda pisca.
+
+---
+
+## ffmpeg
+
+**SAR não-quadrado quebra o `concat`.** Body de avatar costuma vir com SAR tipo `1935:1936`. Segmentos escalados saem `1:1` e o concat falha com *"parameters do not match"*. Pôr `setsar=1` em **todo** segmento.
+
+**`blend=all_mode=screen` em YUV tinge o vídeo INTEIRO.** Preto em YUV limitado é `Y=16, U=V=128`, não zero — screen levanta a luma e desloca a croma nos dois planos, e o resultado é uma dominante magenta em tudo. Converter os dois lados antes e voltar depois:
+```
+[main]format=gbrp[a];[fx]format=gbrp[b];[a][b]blend=all_mode=screen,format=yuv420p[out]
+```
+
+**Não montar camada de efeito com `overlay` sobre base preta + `enable`.** O `overlay` segura o último frame fora da janela e o efeito vaza pro vídeo todo. Usar `tpad` pra criar um stream do tamanho completo, preto fora da janela, e blendar em screen (neutro com preto em RGB):
+```
+[fx]trim=A:B,setpts=PTS-STARTPTS,tpad=start_duration=<pre>:stop_duration=<post>:color=black[layer]
+```
+
+**`-vsync vfr` conflita com `-r`.** Para CFR a partir de um concat de durações variáveis, usar `-vf fps=25` e não `-vsync`.
+
+**Este ffmpeg não tem `libass`, `drawtext` nem `subtitles`.** Legenda se desenha com PIL e vira PNG → concat → ProRes 4444 (`yuva444p10le`). Tem `overlay`, `blend`, `tpad`, `prores_ks`, `qtrle`.
+
+**`volumedetect` não imprime neste build.** Medir nível decodificando para `s16le` e calculando RMS em Python.
+
+**Glob vazio no zsh aborta o comando.** `rm -f *.png` com zero matches mata o resto da linha.
+
+---
+
+## Premiere — as três que mais custam tempo
+
+**DOIS PROJETOS ABERTOS = ESCRITA NO PROJETO ERRADO.** A pior de todas. Com mais de um projeto aberto, `pr_get_project_info` e `pr_get_active_sequence` passam a **discordar sobre qual sequência está ativa**, bins criados vão parar no projeto em foco, e um `pr_overwrite_to_timeline` coloca o clipe de um job dentro da timeline de outro. Aconteceu de verdade: um `HK2.mp4` entrou no lugar de um insert, e três imports sumiram num projeto de outro cliente.
+→ **Checar `pr_get_project_info` no começo de cada lote.** Se o nome não for o do job, parar e pedir para fechar os outros. Se as duas leituras discordarem, o estado do plugin está corrompido — fechar e reabrir o Premiere resolve.
+
+**NodeIds são RECICLADOS depois de salvar/reabrir.** O id que um `pr_import_media` devolveu pode, minutos depois, apontar para outro item. Nunca guardar id entre etapas: reler com `pr_list_project_items` imediatamente antes de usar.
+
+**`ReferenceError: undoStackIndex is not a function`** — erro interno do plugin numa chamada de escrita. **A operação pode ter aplicado PELA METADE**: já aconteceu de o clipe entrar na timeline e o `drop_audio` falhar, deixando o áudio do B-roll no A2. Reler `pr_get_active_sequence` e corrigir só o que faltou; não repetir a chamada inteira.
+
+**A conexão do plugin cai sozinha.** Duas vezes numa sessão. `get_host_status` antes de cada lote de escrita.
+
+## Premiere (plugin Higgsfield)
+
+**Interface em PT-BR quebra `pr_set_clip_transform`.** A tool procura o efeito `Motion`, não acha `Movimento`, e retorna `{"updated": false, "changes": {}}` **sem erro**. Usar:
+```
+pr_set_effect_property(effect_name="Movimento", property_name="Escala", value=112)
+```
+e conferir o `actual` no retorno. Descobrir nomes com `pr_get_effect_properties`. Propriedades: `Posição`, `Escala`, `Rotação`, `Ponto de ancoragem`.
+
+**`pr_create_caption_track` mente nos dois sentidos.** Já retornou `verified:false, captionTracks:0` tendo **criado** a track (que queimou no export), e já retornou o mesmo tendo **não criado** nada. `pr_list_sequence_tracks` não enxerga caption track. Não existe tool pra deletar. **Recomendação: não usar.** Entregar o `.srt` no bin e deixar o usuário arrastar pra timeline.
+
+**`pr_export_sequence_frame` falha com `upload failed (400)`.** Não é transitório. Sem QC visual pelo Premiere — conferir exportando e abrindo o MP4 com ffmpeg.
+
+**Export exige `.epr`.** Nem `pr_export_sequence` nem `pr_add_to_render_queue` acham preset sozinhos. Para 9:16 usar Match Source, que herda a resolução da sequência:
+```
+/Applications/Adobe Media Encoder 2026/Adobe Media Encoder 2026.app/Contents/MediaIO/systempresets/4E49434B_48323634/00 - Match Source - High bitrate.epr
+```
+Os demais presets são 16:9 e geram barras.
+
+**Não existe tool para criar projeto.** Se houver outro projeto aberto, criar um **bin + sequência dedicados** e avisar o usuário para "Salvar como". **Nunca salvar por conta própria** num projeto que não é do job.
+
+**Sobrescrever mídia no mesmo caminho pode ficar em cache.** Ao corrigir um asset já importado, salvar com **nome novo** e reimportar.
+
+---
+
+## Higgsfield
+
+**`nano_banana_pro` roteia para `nano_banana_2`.** Normal. Se a fidelidade de rosto escapar, trocar para `soul_2`.
+
+**Recomendação de preset intercepta a geração.** O servidor pode devolver `preset_recommendation` em vez de gerar (já sugeriu "IN THE DARK" para uma cozinha ensolarada). Recusar com `declined_preset_id` e regerar literal.
+
+**`kling3_0_turbo` ignora "no scene change".** Ele às vezes corta sozinho para um macro no meio do clipe. Isso costuma ser **melhor** que o pedido — conferir antes de descartar.
+
+**Saída não é exatamente 1080x1920.** Vem `1076x1924`. Normalizar com `scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920`.
+
+**B-roll não precisa de áudio nativo.** `generate_audio:false` (Veo/Seedance) ou `sound:'off'` (Kling) economiza crédito. O `kling3_0_turbo` nem tem o parâmetro.
+
+---
+
+## Se o usuário pedir transição e SFX
+
+Assets do Premiere Composer ficam na biblioteca configurada em
+`~/Library/Application Support/MisterHorse/PremiereComposer/preferences` → `BrowserApp.userFolders`.
+No Mac o path tem Unicode decomposto (NFD) — buscar com `find -iname`, nunca com string literal.
+
+- **Flash** é a única transição que não denuncia produção em UGC. Glitch / Burning Light / Film Strip Burns quebram a ilusão.
+- Usar só a janela útil do clipe de flash (medir luminância frame a frame; costuma ser preto nas pontas).
+- Alinhar o **pico** do flash e o **impacto** do whoosh no frame do corte, não o início do arquivo.
+- Whoosh a `volume=0.60` dá ~+3,5 dB no corte — audível sem cobrir a voz. `0.30` é baixo demais.
