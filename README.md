@@ -96,6 +96,22 @@ Vieram de teste comparativo, não de preferência:
 
 ---
 
+## Roadmap — um formato, uma skill
+
+A operação trabalha com cinco formatos. Cada um vira uma skill separada neste repo, não uma skill gigante que tenta fazer tudo.
+
+| Formato | Estado |
+|---|---|
+| **Criativos** | ✅ `editor-automatico-de-broll` — validada em AD01 e AD05 |
+| **Troca de potes** | ⬜ próximo candidato — provavelmente o mais automatizável, por ser substituição mecânica |
+| **Microleads** | ⬜ |
+| **Lead** | ⬜ |
+| **VSL** | ⬜ existem skills de *análise* de VSL, mas nenhuma de edição |
+
+Para adicionar um formato: criar a pasta em `skills/`, listar em `.claude-plugin/marketplace.json`, bumpar a versão em `plugin.json` e registrar no `CHANGELOG.md`.
+
+**Como um formato novo é aprendido:** mostrando um job **já feito** — material de entrada, saída final e o `.prproj` se existir. O processo é deduzido do material, não de explicação escrita. Foi assim que a skill de criativo pegou o padrão de legenda, o ritmo de insert e o estilo de corte.
+
 ## Estrutura do repositório
 
 ```
