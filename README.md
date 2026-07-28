@@ -25,7 +25,7 @@ A avatar está numa cozinha que não existe — cenário gerado. Não há stock 
 Dentro do Claude Code:
 
 ```
-/plugin marketplace add hw-publishing/creative-automation
+/plugin marketplace add jhonatangtw/creative-automation
 /plugin install editor-broll@hw-creative
 ```
 
