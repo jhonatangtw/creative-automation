@@ -1,53 +1,103 @@
-# Estilo UGC — padrão extraído da referência aprovada
+# Estilo de edição — medido no acervo de ativos validados
 
-Use como default quando não houver vídeo de referência. Quando houver, **a referência manda** — extrair dela por mosaico de frames e sobrescrever o que estiver aqui.
+Base: **5 dos 27 ADs validados** da H&W (Diabetes, Joint Pain, Memory Loss, Weight Loss), medidos por detecção de cena em 28/07/2026.
 
-## Proporção do tempo
+Quando houver vídeo de referência no job, **ele manda** — extrair o padrão dele por mosaico de frames e sobrescrever o que está aqui.
 
-| Elemento | Proporção |
+---
+
+## Existem DOIS formatos validados, não um
+
+Os dados não mostram um padrão médio. Mostram dois grupos separados, sem meio-termo:
+
+| Formato | Cortes | Exemplos medidos |
+|---|---|---|
+| **Alta densidade** | 1 a cada **3–5s** | Diabetes 44 cortes/145s · ML-2 32/151s · WL-15 33/168s |
+| **Talking head puro** | **zero cortes** | ML-33 (74s) · JP-03 (251s) |
+
+**Insert NÃO é obrigatório.** O criativo mais longo do acervo — 251 segundos — é também o mais simples: plano fixo do primeiro ao último frame, sem um corte. Ele valida do mesmo jeito.
+
+A escolha entre os dois é de estratégia, não de ofício:
+
+- **Talking head puro** aposta em carisma e história. Funciona quando o rosto e a fala seguram sozinhos. Cortar aqui atrapalha.
+- **Alta densidade** aposta em estímulo e prova. Cenário caseiro, receita sendo feita, balança, ingredientes, prova visual.
+
+**Perguntar ao usuário qual formato antes de decidir a densidade.** Se o brief definir, seguir o brief.
+
+---
+
+## Calibragem de densidade
+
+Se o formato for **alta densidade**, a referência é **1 corte a cada 3 a 5 segundos**.
+
+> Para dimensionar: o AD01 do LeafTide saiu com **15 cortes em 134s — 1 a cada 8,9s**. Está entre os dois grupos, e provavelmente **subcortado** para o padrão de alta densidade da casa. Serviu como corte seco conservador; não serve como referência de ritmo.
+
+Contar corte inclui entrada e saída de insert, punch-in e troca de plano — tudo que muda a imagem.
+
+Medir com:
+```bash
+ffmpeg -v info -i video.mp4 -vf "select='gt(scene,0.30)',metadata=print" -an -f null - 2>&1 | grep -c pts_time
+```
+> Usar `-v info`. Com `-v error` o filtro não imprime nada e a contagem volta zero — parece que o vídeo não tem corte.
+
+---
+
+## O que é igual em TODOS os validados
+
+Isto é padrão da casa, não escolha por job:
+
+- **9:16 vertical**, 1080x1920 (alguns 720x1280)
+- **Legenda em pílula branca, texto preto, 3–4 palavras**, centro-baixo. Sem exceção nos cinco medidos.
+- **Talking head domina o tempo**, mesmo no formato de alta densidade
+- **Pessoa comum, cenário doméstico real** — cozinha, quintal, sala
+
+---
+
+## Inserts — onde entram, quando entram
+
+Critério único: **casamento verbal-visual.** O insert entra no segundo em que a fala o descreve.
+
+Os tipos que aparecem nos validados de alta densidade:
+
+| Tipo | Exemplo do acervo |
 |---|---|
-| Talking head | ~70% do tempo |
-| Inserts de B-roll | 4–5 em ~2min, 4–8s cada |
-| Punch-in | 3–4 janelas, nos beats sem B-roll |
+| Preparo / receita | ingredientes na bancada, mistura sendo feita no Pyrex |
+| Prova numérica | balança marcando o peso, tela de celular |
+| Produto / mecanismo | macro do pó, microscopia |
+| Reação / prova social | print, depoimento |
 
-Menos é mais. Insert espalhado vira videoclipe e perde o cheiro de depoimento.
+**Roupa diferente em cada B-roll da mesma pessoa** — lê como dias diferentes, que é o cheiro de UGC real.
 
-## Legenda
-
-- Pílula branca **opaca**, cantos arredondados (raio ~20px em 1080 de largura)
-- Texto **preto**, bold arredondado (`Arial Rounded Bold` no macOS), ~60px
-- **Caso da copy, NÃO caixa alta.** O padrão é `--caixa original`. Caixa alta perde a pontuação de leitura e descaracteriza nome próprio (`MOUNJARO` some no meio do bloco). Só usar `--caixa alta` se o usuário pedir.
-- Depois de gerar, conferir o caso **de forma sensível a maiúscula** contra a copy — o diff normal do `conferir_legenda.py` normaliza tudo e não pega isso. O Whisper quebra frase em lugar diferente da copy e capitaliza errado, sobretudo em fala entre aspas (`It's okay. You can let go...`). Realinhar palavra a palavra pelo índice.
-- 3–4 palavras por bloco
-- Centro horizontal, **y ≈ 73%** da altura
-- Quebra respeitando frase: sempre após `. ! ?`, após `,` se o bloco já tem 2+ palavras, teto de 4 palavras
-- Nunca separar número da unidade (`12 DAYS`, não `12` / `DAYS`)
-
-## Inserts — onde entram
-
-O único critério é **casamento verbal-visual**: o insert entra no segundo em que a fala o descreve. Os pontos que sempre se pagam num criativo de emagrecimento/suplemento:
-
-| Momento da copy | Insert |
-|---|---|
-| Prova física ("troquei o guarda-roupa", "minha barriga sumiu") | Ela **de outra roupa**, mostrando a mudança |
-| A receita / o mecanismo | Preparo, mãos, macro do produto |
-| Tentativas que falharam | Opcional — só se sobrar espaço |
-| Payoff / callback perto do CTA | Callback da primeira prova, roupa nova |
+---
 
 ## Punch-in
 
-Escala entre **110% e 116%**, **variando entre as janelas**. Escala igual em todas vira tique perceptível.
+Escala entre **110% e 116%**, variando entre as janelas. Escala igual em todas vira tique perceptível.
 
-Corte seco para dentro e para fora — nada de zoom animado, que lê como corporativo. Aplicar nos beats de virada emocional onde não há B-roll cobrindo.
+Corte seco para dentro e para fora — nada de zoom animado, que lê como corporativo.
+
+---
 
 ## Transição
 
-**Nenhuma.** Corte seco. A referência aprovada não usa transição em lugar nenhum.
+**Nenhuma.** Corte seco.
 
-Se o usuário pedir explicitamente, só flash — e discreto. Ver `armadilhas.md`.
+Testado de forma comparativa no AD01: foram produzidas duas versões, uma limpa e outra com Flash Transition do Premiere Composer mais whoosh. **O usuário escolheu a limpa.** Em UGC, transição denuncia produção.
+
+Se pedirem explicitamente, só flash e discreto. Ver `armadilhas.md`.
+
+---
 
 ## Áudio
 
-Body de TTS já vem empacotado, sem tempo morto. Não procurar silêncio para cortar.
+Body de TTS já vem empacotado, sem tempo morto — não procurar silêncio para cortar.
 
-Música de fundo e transição são finalização do usuário no Premiere — não fazer por ele salvo pedido explícito.
+Música de fundo e transição são finalização humana no Premiere.
+
+---
+
+## Limites desta medição
+
+- **5 de 27 ADs** foram medidos. A amostra pode não representar o acervo.
+- **"Validado" ainda não está definido** — não se sabe se significa "escalou" ou apenas "não foi reprovado". Se alguns escalaram muito mais, a densidade correta é a deles, não a média.
+- Não há dado de performance por criativo. Sem isso, tudo aqui é padrão observado, não causa comprovada.

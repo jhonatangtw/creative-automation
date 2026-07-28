@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0] — 2026-07-28
+
+### Alterado
+- **`estilo-ugc.md` reescrito a partir de medição real** no acervo de ativos validados da H&W (5 de 27 ADs, detecção de cena).
+
+### O que a medição revelou
+- **Existem DOIS formatos validados, não um.** Alta densidade (1 corte a cada 3–5s) e talking head puro (zero cortes). Sem meio-termo.
+- **Insert não é obrigatório.** O criativo mais longo do acervo (251s) é o mais simples: plano fixo sem um corte, e valida.
+- A afirmação anterior de que "o que segura retenção é insert" estava **errada como regra universal** — foi corrigida.
+- O AD01 do LeafTide (1 corte a cada 8,9s) está provavelmente **subcortado** para o padrão de alta densidade da casa.
+- Confirmado como padrão da casa em 100% da amostra: legenda em pílula branca, texto preto, 3–4 palavras.
+
+### Corrigido
+- Comando de medição de densidade exige `-v info`; com `-v error` o filtro não imprime e a contagem volta zero silenciosamente.
+
 ## [1.0.0] — 2026-07-28
 
 Primeira versão. Validada em produção nos criativos AD01 e AD05 do LeafTide.
