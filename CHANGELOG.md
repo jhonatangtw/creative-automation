@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0] — 2026-07-29
+
+### Adicionado
+- **`SETUP-MCP.md`** — o passo que mais trava na instalação, documentado com os dois caminhos possíveis e por que só um funciona.
+- **`diagnostico.sh`** — reporta versões, dependências, fonte, modelo do Whisper, servidores MCP, skills, plugins e presença de chaves. Nunca imprime valor de chave.
+
+### Descoberto em suporte real
+- **O Higgsfield NÃO pode ser adicionado com `claude mcp add`.** Esse caminho sobe um servidor em `localhost:<porta>` e pede redirect para lá; o cliente OAuth do Higgsfield não tem localhost cadastrado. Falha sempre com `invalid_request: redirect_uri`, em qualquer porta e em qualquer máquina — inclusive nas que funcionam.
+- **O caminho correto é conector do claude.ai**, com a URL `https://bridge.higgsfield.ai/mcp` (a que o painel do Premiere mostra em "Copy"). O OAuth acontece no domínio da Anthropic, sem localhost.
+- Existe outra URL parecida (`mcp.higgsfield.ai`) que não funciona. A do painel é a válida.
+- Tabela de diagnóstico por sintoma, separando falha do lado do Claude e falha do lado do Premiere.
+
 ## [1.1.1] — 2026-07-28
 
 ### Corrigido

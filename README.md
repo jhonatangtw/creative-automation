@@ -37,6 +37,14 @@ Confira com `/skills` — `editor-automatico-de-broll` deve aparecer.
 
 Ver **[REQUISITOS.md](REQUISITOS.md)**. Sem isso a skill instala mas falha ao rodar.
 
+### 2b. Conectar o Premiere — leia antes de tentar
+
+Ver **[SETUP-MCP.md](SETUP-MCP.md)**. É o passo que mais trava.
+
+**O Higgsfield tem que ser adicionado como conector no claude.ai, NÃO com `claude mcp add`.** Pelo caminho local o OAuth tenta redirecionar para `localhost` e falha com `invalid_request: redirect_uri` — em qualquer máquina, em qualquer porta.
+
+Para diagnosticar: `bash diagnostico.sh`
+
 ### 3. Usar
 
 Ver **[COMO-USAR.md](COMO-USAR.md)**.
