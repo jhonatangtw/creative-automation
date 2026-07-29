@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1] — 2026-07-28
+
+### Corrigido
+- **O plugin do Premiere NÃO é opcional.** Estava documentado como opcional; sem ele a automação não cria sequência, não coloca insert e não escreve marcador. Reescrito em `REQUISITOS.md` com as duas peças necessárias (conector no claude.ai + painel conectado no Premiere) e como confirmar (`get_host_status` → `ppro: true`).
+- **Regra nova em `armadilhas.md`:** rodar `get_host_status` antes de tudo e, se o Premiere não estiver conectado, **avisar e parar** — nunca editar o `.prproj` diretamente. Com o projeto aberto, o Premiere sobrescreve ao salvar e o trabalho é perdido.
+- Tabela de sintomas em `COMO-USAR.md` cobre a mensagem *"não tenho ferramenta de controle ao vivo do Premiere"*.
+
 ## [1.1.0] — 2026-07-28
 
 ### Alterado

@@ -41,6 +41,19 @@ for tag,i1,i2,j1,j2 in sm.get_opcodes():
 
 ---
 
+## Antes de qualquer coisa: o Premiere está conectado?
+
+**Rodar `get_host_status` no começo.** Se `ppro` não for `true`, as tools `pr_*` não existem e nada de timeline funciona.
+
+Faltam **duas peças, que precisam existir juntas**: o **conector Higgsfield no claude.ai** (Settings → Connectors) e o **painel Higgsfield dentro do Premiere**, com Connect pressionado.
+
+**Se não estiver conectado, NÃO improvisar.** Especificamente:
+
+- **Nunca editar o `.prproj` diretamente com o projeto aberto** — o Premiere sobrescreve ao salvar e o trabalho é perdido. É a única saída *destrutiva* disponível, e por isso a mais tentadora.
+- Não descompactar o XML do projeto para "injetar" marcador.
+
+O certo é **avisar que falta a conexão e parar**. Se o usuário não puder conectar agora, a saída não-destrutiva é entregar a lista de timecodes em texto — ele mesmo marca — ou um CSV de marcadores para importar em Marker Panel → Import Markers. Nunca escrever no arquivo do projeto.
+
 ## Premiere — as três que mais custam tempo
 
 **DOIS PROJETOS ABERTOS = ESCRITA NO PROJETO ERRADO.** A pior de todas. Com mais de um projeto aberto, `pr_get_project_info` e `pr_get_active_sequence` passam a **discordar sobre qual sequência está ativa**, bins criados vão parar no projeto em foco, e um `pr_overwrite_to_timeline` coloca o clipe de um job dentro da timeline de outro. Aconteceu de verdade: um `HK2.mp4` entrou no lugar de um insert, e três imports sumiram num projeto de outro cliente.

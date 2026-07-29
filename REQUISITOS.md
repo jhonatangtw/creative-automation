@@ -33,13 +33,29 @@ whisper --model large-v3 --help
 
 Custo real medido: ~2 créditos por imagem, ~10 por clipe de 5 s em 1080p. **Um criativo completo sai por ~60 créditos.**
 
-### Premiere Pro + plugin Higgsfield — opcional
+### Premiere Pro + plugin Higgsfield — OBRIGATÓRIO para timeline e marcadores
 
-Só é necessário para montar a timeline. O MP4 final é gerado por ffmpeg e **não depende do Premiere**.
+Sem isto, a automação **não cria sequência, não coloca insert e não escreve marcador**. Ela só consegue gerar B-roll, legenda e o MP4 final por ffmpeg.
 
-No Premiere: abrir o painel do **Higgsfield** e clicar em **Connect** em "Supercomputer Connection".
+São **duas peças que precisam existir juntas**:
 
-> **Atenção:** a conexão cai sozinha de vez em quando. Se a automação reclamar que o Premiere não responde, é só reconectar pelo painel.
+1. **Conector Higgsfield no claude.ai** — Settings → Connectors. É a ponte entre o Claude e o Premiere.
+2. **Painel Higgsfield dentro do Premiere** — abrir o painel e clicar em **Connect** em "Supercomputer Connection".
+
+Se qualquer uma faltar, o Claude não enxerga o Premiere.
+
+**Como confirmar:** peça `get_host_status`. Tem que voltar `ppro: true`.
+
+Sintomas de que está faltando:
+
+- *"Não tenho uma ferramenta de controle ao vivo do Premiere nesta sessão"*
+- O Claude tenta ler ou editar o `.prproj` diretamente, ou oferecer CSV de marcadores
+
+> **Nunca deixe editar o `.prproj` com o projeto aberto no Premiere.** O Premiere sobrescreve o arquivo ao salvar e o trabalho é perdido.
+
+> **A conexão cai sozinha.** Já caiu duas vezes numa sessão. Se a automação reclamar que o Premiere não responde no meio do trabalho, é só reconectar pelo painel — nada se perde.
+
+> **Deixe apenas UM projeto aberto.** Com dois, o plugin escreve no projeto errado — bins e clipes vão parar em outro job.
 
 ### HeyGen e ElevenLabs — só para gerar o bruto do zero
 

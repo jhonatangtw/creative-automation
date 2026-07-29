@@ -101,6 +101,8 @@ Prefixos:
 
 | Sintoma | O que fazer |
 |---|---|
+| *"Não tenho ferramenta de controle ao vivo do Premiere"* | Falta o conector. Ver [REQUISITOS.md](REQUISITOS.md) — precisa do conector Higgsfield no claude.ai **e** do painel conectado no Premiere. Conferir com `get_host_status` → `ppro: true` |
+| Claude oferece editar o `.prproj` ou gerar CSV de marcadores | Mesmo problema acima. **Recuse a edição direta do `.prproj`** com o projeto aberto — o Premiere sobrescreve ao salvar |
 | "Premiere não está conectado" | Abrir o painel do Higgsfield no Premiere e clicar em Connect |
 | Clipe entrou na timeline errada | Fechar todos os projetos menos um e refazer |
 | Legenda com nome de marca errado | Colocar a copy em `01_BRUTOS/COPY/` e pedir a conferência |
