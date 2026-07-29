@@ -161,6 +161,13 @@ pr_timeline_colocar  →  {"sequencia":"<nome>", "clipes":[...]}   ← em lote
 
 **Punch-in** — `pr_zoom_aplicar` age sobre a **seleção**, então peça ao usuário para selecionar os clipes. Escalas variadas (110–116%).
 
+**Tire o áudio do B-roll.** `pr_timeline_colocar` traz o áudio nativo junto, e ele briga com a voz do avatar:
+```
+pr_timeline_remover  →  {"sequencia":"<nome>", "tipo":"audio", "trilha":<n>}
+```
+
+**Confira lendo de volta — sempre.** `pr_timeline_listar` mostra o que existe em cada trilha. Não reportar como pronto sem ter lido: retorno de sucesso diz que a chamada não deu erro, não que o resultado está certo. Foi exatamente assim que o áudio de b-roll passou despercebido.
+
 **Antes de qualquer coisa destrutiva**, rode com `simular: true` e mostre o número ao usuário. Não há desfazer pelo MCP.
 
 > **Não rode `pr_autoclip` numa sequência anotada** — ele corta em todos os marcadores, inclusive nos de sugestão. Use `ignorarCores: [1,2,6]`.

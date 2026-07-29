@@ -16,7 +16,7 @@ Existem **dois** servidores que falam com o Adobe. Eles fazem coisas diferentes,
 
 ## Tools PRO — 2 minutos, sem login
 
-**1.** Instale o Editor Black Belt Tools PRO (versão **1.1.0** ou superior) e abra o Premiere.
+**1.** Instale o Editor Black Belt Tools PRO (versão **1.2.0** ou superior) e abra o Premiere.
 
 **2.** Abra o painel: *Janela → Extensões → Editor Black Belt Tools PRO*.
 
@@ -42,7 +42,7 @@ Mesma coisa, com o painel aberto no AE. Ele usa a porta **7843** e o nome `tools
 
 | Sintoma | O que é |
 |---|---|
-| O botão não aparece no rodapé | Versão anterior à 1.1.0. Atualize pelo botão dourado no topo do painel |
+| O botão não aparece no rodapé | Versão anterior à 1.2.0. Atualize pelo botão dourado no topo do painel |
 | Clicou em Ligar e não ficou verde | A porta 7842 está ocupada. Feche outras instâncias do Premiere |
 | O comando colou mas o Claude não vê as ferramentas | Falta reiniciar o Claude Code |
 | Funcionava e parou | Confira se o painel continua aberto — o servidor mora dentro dele |

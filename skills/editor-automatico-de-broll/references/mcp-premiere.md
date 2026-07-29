@@ -9,6 +9,7 @@ Existem **dois** servidores que falam com o Adobe. Eles não competem — fazem 
 | Login | nenhum | conector no claude.ai |
 | Marcadores | **lote inteiro numa chamada** | um por chamada |
 | Importar / timeline | sim | sim |
+| Ler e corrigir a timeline | sim | sim |
 | Gerar imagem e vídeo | **não** | **sim — é insubstituível aqui** |
 
 **Quem decide é o usuário — sempre pergunte.** O que muda: o Tools PRO opera a timeline mais rápido e sem cair; o Higgsfield é o único que gera imagem e vídeo. Não é um *ou* outro, é quem faz o quê.
@@ -67,7 +68,39 @@ Depois de registrar, **reinicie o Claude Code** — servidores MCP carregam no i
 | `pr_zoom_aplicar` | punch-in nos clipes **selecionados** |
 | `pr_titulos_inserir` | `.mogrt` na timeline com o texto trocado |
 
+**Corrigir o que já está na timeline:**
+
+| | |
+|---|---|
+| `pr_timeline_listar` | **o que existe em cada trilha**, de vídeo e de áudio |
+| `pr_timeline_remover` | por trilha, nome ou janela de tempo |
+| `pr_timeline_mudo` | silencia trilha inteira, e desfaz |
+
 No After Effects: `ae_legendas_importar` monta a legenda a partir do `.srt`, com karaokê opcional. Cores em `[R,G,B]` de **0 a 1**, não hexadecimal.
+
+---
+
+## O B-roll entra com áudio — sempre tire
+
+`pr_timeline_colocar` traz o áudio nativo do clipe para a trilha de áudio correspondente. Num criativo isso briga com a voz do avatar.
+
+```
+pr_timeline_colocar  →  {"colocados": 2}          parece pronto
+pr_timeline_listar   →  A3: 29.52–33.52 B1_guardaroupa.mp4   ← estava lá
+pr_timeline_remover  →  {"sequencia":"...", "tipo":"audio", "trilha":2}
+```
+
+Isso aconteceu de verdade: dois b-rolls foram colocados, a ferramenta respondeu `colocados: 2`, e o áudio veio junto sem ninguém notar. Os b-rolls do fluxo antigo, na mesma timeline, não tinham áudio nenhum — o novo era o único errado.
+
+---
+
+## Ler de volta é obrigatório, não zelo extra
+
+**Nunca reportar uma edição como pronta sem `pr_timeline_listar`.** Retorno de sucesso diz que a chamada não deu erro — não que o resultado está certo.
+
+Foi assim que passaram, nesta skill: vídeo inteiro magenta, efeito vazando para todos os frames, legenda duplicada, e o áudio de b-roll acima. Todos invisíveis nos retornos de sucesso.
+
+O `pr_timeline_remover` deixa o buraco por padrão (`ondular: false`). Fechar o buraco numa timeline já sincronizada com áudio desalinha tudo que vem depois — *ripple* tem que ser pedido, não presumido.
 
 ---
 

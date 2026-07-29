@@ -39,7 +39,7 @@ Sem isto, a automação **não coloca insert e não escreve marcador**. Ela só 
 
 Há **dois** caminhos, e o mais simples é o novo:
 
-**Tools PRO (recomendado)** — Editor Black Belt Tools PRO **1.1.0+**. Painel → **Conectar IA** → **Ligar** → colar o comando no terminal. Sem login, sem OAuth, roda em `127.0.0.1`. Ele **opera** a timeline: marcadores em lote, importar mídia, montar, punch-in.
+**Tools PRO (recomendado)** — Editor Black Belt Tools PRO **1.2.0+**. Painel → **Conectar IA** → **Ligar** → colar o comando no terminal. Sem login, sem OAuth, roda em `127.0.0.1`. Ele **opera** a timeline: marcadores em lote, importar mídia, montar, punch-in.
 
 **Higgsfield** — as mesmas operações, pela nuvem. Precisa do conector no claude.ai **e** do painel com Connect pressionado no Premiere. Mais lento e cai sozinho às vezes.
 

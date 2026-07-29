@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.4.0
+
+**Edição de timeline, e a regra de ler de volta.**
+
+O Tools PRO 1.2.0 trouxe `pr_timeline_listar`, `pr_timeline_remover` e `pr_timeline_mudo`. Com o leitor, a skill passa a **conferir** o que escreveu em vez de confiar no retorno da ferramenta.
+
+- **B-roll entra com áudio** — `pr_timeline_colocar` traz o áudio nativo junto, e ele briga com a voz do avatar. O passo 8 agora manda tirar. Isso aconteceu de verdade num teste: dois b-rolls colocados, `colocados: 2` de resposta, e o áudio em A3 sem ninguém notar.
+- **Ler de volta virou obrigatório**, não zelo extra. Retorno de sucesso diz que a chamada não deu erro — não que o resultado está certo.
+- `pr_timeline_remover` deixa o buraco por padrão: *ripple* numa timeline sincronizada com áudio desalinha tudo que vem depois, então tem que ser pedido.
+
+Requer Editor Black Belt Tools PRO **1.2.0** ou superior.
+
+
 ## 1.3.0
 
 **A skill agora pergunta qual MCP usar.** Existem dois servidores que falam com o Adobe e eles somam: o **Tools PRO** (painel do Editor Black Belt, local, sem login) opera a timeline; o **Higgsfield** gera imagem e vídeo. A escolha de quem opera passa a ser do usuário — a automação não decide sozinha.
