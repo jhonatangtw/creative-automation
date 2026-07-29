@@ -36,6 +36,29 @@ Se faltar a referência, seguir o padrão UGC descrito em `references/estilo-ugc
 
 ## Fluxo
 
+### 0. PERGUNTAR qual MCP usar — sempre, antes de qualquer coisa
+
+Dois servidores falam com o Adobe. **Nunca escolher sozinho: perguntar ao usuário.**
+
+Antes de perguntar, descobrir quais estão vivos — assim a pergunta vem com informação, não no escuro:
+
+```
+pr_midia_info      →  Tools PRO respondeu?
+get_host_status    →  Higgsfield respondeu, com ppro: true?
+```
+
+Então perguntar, dizendo o que está no ar:
+
+> **Qual MCP eu uso para operar o Premiere?**
+> - **Tools PRO** — local, ~3 ms, sem login. Marcadores em lote, importar e montar timeline.
+> - **Higgsfield** — nuvem, com login. Mais lento e já caiu no meio do trabalho, mas é o único que **gera** imagem e vídeo.
+
+Ponto que precisa ficar claro na pergunta: **o B-roll é gerado no Higgsfield de qualquer jeito.** A escolha é só sobre quem *opera* a timeline. Dá para gerar no Higgsfield e montar no Tools PRO — costuma ser o melhor arranjo.
+
+Se nenhum dos dois responder, **avisar e parar.** Nunca editar o `.prproj` direto — ver `armadilhas.md`.
+
+Detalhes, ferramentas e travas em `references/mcp-premiere.md`. **Ler antes de escrever no Premiere.**
+
 ### 1. Ler o material antes de decidir qualquer coisa
 ```bash
 ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate \
@@ -119,8 +142,28 @@ ffmpeg -v error -i f_3.png -i f_11.png ... -filter_complex hstack=8 -frames:v 1 
 ```
 **Olhar a imagem.** Não reportar como pronto sem ter visto. Nesta skill já apareceram: vídeo inteiro magenta, efeito vazando pra todos os frames, legenda duplicada — todos invisíveis nos retornos de sucesso das ferramentas.
 
-### 8. Premiere (opcional, para o usuário finalizar)
-Montar a timeline só se o usuário for finalizar lá (transição, música). Ver `references/armadilhas.md` — o plugin tem várias falhas silenciosas.
+### 8. Montar no Premiere
+
+Com o Tools PRO ligado, isto deixou de ser opcional: dá para entregar o projeto **editável**, que é melhor que um MP4 fechado — o editor troca um insert, testa outro hook.
+
+**Sempre ler o estado imediatamente antes de escrever.** A sequência ativa muda quando o usuário clica noutra aba, e o estado de minutos atrás não vale.
+
+```
+pr_midia_info        →  confere projeto e sequência ativa
+pr_midia_importar    →  {"arquivos":[...], "bin":"BROLL"}
+pr_midia_listar      →  pega o nome EXATO de cada item
+pr_timeline_colocar  →  {"sequencia":"<nome>", "clipes":[...]}   ← em lote
+```
+
+`pr_timeline_colocar` resolve **todos** os clipes antes de colocar qualquer um: se um nome estiver errado, nada entra. Timeline pela metade é pior que nada feito.
+
+**Marcações** — `pr_marcadores_criar` aceita a lista inteira numa chamada. Vermelho = B-roll, azul = lettering, roxo = decisão humana. Marcador de **trecho** (com `duracao`), cobrindo a janela da fala.
+
+**Punch-in** — `pr_zoom_aplicar` age sobre a **seleção**, então peça ao usuário para selecionar os clipes. Escalas variadas (110–116%).
+
+**Antes de qualquer coisa destrutiva**, rode com `simular: true` e mostre o número ao usuário. Não há desfazer pelo MCP.
+
+> **Não rode `pr_autoclip` numa sequência anotada** — ele corta em todos os marcadores, inclusive nos de sugestão. Use `ignorarCores: [1,2,6]`.
 
 ---
 
@@ -138,6 +181,7 @@ Montar a timeline só se o usuário for finalizar lá (transição, música). Ve
 A skill começa no body pronto. Para gerar o bruto a partir da copy (copy → áudio → lipsync), ver `references/heygen-lipsync.md`: HeyGen v3 com Avatar V, clone de voz no ElevenLabs, e o caminho alternativo pelo Higgsfield quando o HeyGen recusa a persona.
 
 ## Referências
+- `references/mcp-premiere.md` — conectar e operar Premiere/AE, as travas e a convenção de cor. **Ler antes de escrever no Premiere.**
 - `references/armadilhas.md` — falhas silenciosas do Premiere/ffmpeg/Whisper. **Ler antes de montar.**
 - `references/heygen-lipsync.md` — gerar o bruto: TTS, clone de voz, lipsync e motores
 - `references/prompts-broll.md` — templates de prompt de B-roll e modelos do Higgsfield

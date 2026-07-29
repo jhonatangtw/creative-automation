@@ -60,6 +60,7 @@ Outras formas que funcionam:
 
 ## 4. O que vai acontecer
 
+0. **Pergunta qual MCP usar** para operar o Premiere — Tools PRO ou Higgsfield. O B-roll sai do Higgsfield de qualquer jeito; a escolha é só sobre quem monta a timeline
 1. Lê os vídeos e extrai mosaico de frames da referência para deduzir o estilo
 2. Transcreve o áudio com timestamp por palavra
 3. **Mostra o mapa de inserts antes de executar** — é aqui que você aprova ou ajusta
@@ -101,7 +102,8 @@ Prefixos:
 
 | Sintoma | O que fazer |
 |---|---|
-| *"Não tenho ferramenta de controle ao vivo do Premiere"* | Falta o conector. Ver [REQUISITOS.md](REQUISITOS.md) — precisa do conector Higgsfield no claude.ai **e** do painel conectado no Premiere. Conferir com `get_host_status` → `ppro: true` |
+| *"Não tenho ferramenta de controle ao vivo do Premiere"* | Nenhum dos dois servidores está ligado. O caminho rápido é o Tools PRO: painel → **Conectar IA** → **Ligar**. Ver [SETUP-MCP.md](SETUP-MCP.md) |
+| Ele perguntou qual MCP usar | É de propósito. "Tools PRO para montar, Higgsfield para gerar" é a resposta usual |
 | Claude oferece editar o `.prproj` ou gerar CSV de marcadores | Mesmo problema acima. **Recuse a edição direta do `.prproj`** com o projeto aberto — o Premiere sobrescreve ao salvar |
 | "Premiere não está conectado" | Abrir o painel do Higgsfield no Premiere e clicar em Connect |
 | Clipe entrou na timeline errada | Fechar todos os projetos menos um e refazer |

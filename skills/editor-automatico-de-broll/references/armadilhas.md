@@ -41,11 +41,13 @@ for tag,i1,i2,j1,j2 in sm.get_opcodes():
 
 ---
 
-## Antes de qualquer coisa: o Premiere está conectado?
+## Antes de qualquer coisa: quem está do outro lado?
 
-**Rodar `get_host_status` no começo.** Se `ppro` não for `true`, as tools `pr_*` não existem e nada de timeline funciona.
+**Chamar `pr_midia_info` (Tools PRO) no começo.** Se responder, ele está ligado e é quem deve operar a timeline — local, ~3 ms, sem login.
 
-Faltam **duas peças, que precisam existir juntas**: o **conector Higgsfield no claude.ai** (Settings → Connectors) e o **painel Higgsfield dentro do Premiere**, com Connect pressionado.
+Se não responder, tentar `get_host_status` (Higgsfield). Se vier `ppro: true`, usar as `pr_*` dele.
+
+Como ligar o Tools PRO: painel → **Conectar IA** → **Ligar** → colar o comando no terminal, uma vez só. Detalhes em `mcp-premiere.md`.
 
 **Se não estiver conectado, NÃO improvisar.** Especificamente:
 
@@ -54,7 +56,16 @@ Faltam **duas peças, que precisam existir juntas**: o **conector Higgsfield no 
 
 O certo é **avisar que falta a conexão e parar**. Se o usuário não puder conectar agora, a saída não-destrutiva é entregar a lista de timecodes em texto — ele mesmo marca — ou um CSV de marcadores para importar em Marker Panel → Import Markers. Nunca escrever no arquivo do projeto.
 
-## Premiere — as três que mais custam tempo
+## Premiere — as que mais custam tempo
+
+**A SEQUÊNCIA ATIVA MUDA QUANDO O USUÁRIO CLICA NOUTRA ABA.** Toda ferramenta age na ativa. Ler o estado, o usuário clicar noutra aba, e escrever depois = escrever na sequência errada. Aconteceu: **17 marcadores de um job real apagados** no lugar dos de um teste.
+→ Declarar o nome no campo `sequencia` (obrigatório em `pr_marcadores_apagar`). Se não bater com a ativa, a operação morre sem tocar em nada. E reler `pr_marcadores_info` **imediatamente antes** de escrever — não confiar em leitura de minutos atrás.
+
+**`pr_autoclip` corta em TODOS os marcadores, inclusive nos de anotação.** Isso bastava quando marcador só queria dizer "corte aqui". Agora a automação usa marcador como sugestão de B-roll e lettering — rodar o AutoClip numa sequência anotada pica o body em vinte pedaços.
+→ `pr_autoclip_info` devolve a contagem por cor. Filtrar com `ignorarCores: [1,2,6]` e simular antes.
+
+**Simular antes de destruir.** `simular: true` em `pr_autoclip`, `pr_marcadores_apagar`, `pr_timeline_colocar` e `pr_midia_importar` devolve o que *seria* feito. Não há desfazer pelo MCP — a diferença entre "3 cortes" e "20 cortes" é a diferença entre uma edição e um estrago.
+
 
 **DOIS PROJETOS ABERTOS = ESCRITA NO PROJETO ERRADO.** A pior de todas. Com mais de um projeto aberto, `pr_get_project_info` e `pr_get_active_sequence` passam a **discordar sobre qual sequência está ativa**, bins criados vão parar no projeto em foco, e um `pr_overwrite_to_timeline` coloca o clipe de um job dentro da timeline de outro. Aconteceu de verdade: um `HK2.mp4` entrou no lugar de um insert, e três imports sumiram num projeto de outro cliente.
 → **Checar `pr_get_project_info` no começo de cada lote.** Se o nome não for o do job, parar e pedir para fechar os outros. Se as duas leituras discordarem, o estado do plugin está corrompido — fechar e reabrir o Premiere resolve.

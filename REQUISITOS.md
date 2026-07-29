@@ -33,18 +33,19 @@ whisper --model large-v3 --help
 
 Custo real medido: ~2 créditos por imagem, ~10 por clipe de 5 s em 1080p. **Um criativo completo sai por ~60 créditos.**
 
-### Premiere Pro + plugin Higgsfield — OBRIGATÓRIO para timeline e marcadores
+### Um caminho até o Premiere — OBRIGATÓRIO para timeline e marcadores
 
-Sem isto, a automação **não cria sequência, não coloca insert e não escreve marcador**. Ela só consegue gerar B-roll, legenda e o MP4 final por ffmpeg.
+Sem isto, a automação **não coloca insert e não escreve marcador**. Ela só consegue gerar B-roll, legenda e o MP4 final por ffmpeg.
 
-São **duas peças que precisam existir juntas**:
+Há **dois** caminhos, e o mais simples é o novo:
 
-1. **Conector Higgsfield no claude.ai** — Settings → Connectors. É a ponte entre o Claude e o Premiere.
-2. **Painel Higgsfield dentro do Premiere** — abrir o painel e clicar em **Connect** em "Supercomputer Connection".
+**Tools PRO (recomendado)** — Editor Black Belt Tools PRO **1.1.0+**. Painel → **Conectar IA** → **Ligar** → colar o comando no terminal. Sem login, sem OAuth, roda em `127.0.0.1`. Ele **opera** a timeline: marcadores em lote, importar mídia, montar, punch-in.
 
-Se qualquer uma faltar, o Claude não enxerga o Premiere.
+**Higgsfield** — as mesmas operações, pela nuvem. Precisa do conector no claude.ai **e** do painel com Connect pressionado no Premiere. Mais lento e cai sozinho às vezes.
 
-**Como confirmar:** peça `get_host_status`. Tem que voltar `ppro: true`.
+> Ter os dois é o ideal, porque **o B-roll só é gerado pelo Higgsfield**. O arranjo usual é gerar nele e montar no Tools PRO.
+
+**Como confirmar:** peça *"lê o projeto do Premiere"*. Deve voltar o nome do projeto e da sequência ativa.
 
 Sintomas de que está faltando:
 

@@ -63,8 +63,9 @@ else:
 PY
 
 echo; echo "SERVIDORES MCP LOCAIS"; linha
-echo "  ATENCAO: o Higgsfield NAO deve aparecer aqui."
-echo "  Ele tem que ser conector do claude.ai. Ver SETUP-MCP.md"
+echo "  ESPERADO: toolspro-pr (e toolspro-ae, se usa After Effects)."
+echo "  O Higgsfield NAO deve aparecer aqui — ele e conector do claude.ai."
+echo "  Ver SETUP-MCP.md"
 if command -v claude >/dev/null 2>&1; then
   claude mcp list 2>/dev/null | sed 's/^/  /' || echo "  (nao consegui listar)"
 else
@@ -107,8 +108,8 @@ if [ "$falta" -gt 0 ]; then
 fi
 echo
 echo " Falta ainda, fora deste script:"
-echo "   1. Conector Higgsfield no claude.ai  (NAO via 'claude mcp add')"
-echo "   2. Painel Higgsfield no Premiere, com Connect pressionado"
-echo "   3. Confirmar com get_host_status -> ppro: true"
+echo "   1. Tools PRO: painel no Premiere -> Conectar IA -> Ligar -> colar o comando"
+echo "   2. Higgsfield (so pra GERAR b-roll): conector no claude.ai, NAO via 'claude mcp add'"
+echo "   3. Reiniciar o Claude Code depois de registrar"
 echo " Ver SETUP-MCP.md"
 linha

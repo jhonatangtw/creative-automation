@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.0
+
+**A skill agora pergunta qual MCP usar.** Existem dois servidores que falam com o Adobe e eles somam: o **Tools PRO** (painel do Editor Black Belt, local, sem login) opera a timeline; o **Higgsfield** gera imagem e vídeo. A escolha de quem opera passa a ser do usuário — a automação não decide sozinha.
+
+- `references/mcp-premiere.md` — referência nova: como conectar, as 24 ferramentas do Premiere e 10 do AE, as travas e a convenção de cor
+- Passo 0 do fluxo: descobrir quem está vivo e **perguntar**
+- Passo 8 deixou de ser opcional — com o Tools PRO dá para entregar o projeto editável
+- `SETUP-MCP.md` reescrito: o caminho do Tools PRO leva 2 minutos e não tem OAuth, então o `invalid_request: redirect_uri` deixou de ser o obstáculo principal
+- `armadilhas.md`: três lições novas — declarar a sequência antes de escrever, o AutoClip cortando em marcador de anotação, e simular antes de destruir
+- `diagnostico.sh` passa a esperar `toolspro-pr` na lista de MCPs
+
+Requer Editor Black Belt Tools PRO **1.1.0** ou superior.
+
+
 ## [1.2.0] — 2026-07-29
 
 ### Adicionado

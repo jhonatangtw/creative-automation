@@ -37,11 +37,13 @@ Confira com `/skills` — `editor-automatico-de-broll` deve aparecer.
 
 Ver **[REQUISITOS.md](REQUISITOS.md)**. Sem isso a skill instala mas falha ao rodar.
 
-### 2b. Conectar o Premiere — leia antes de tentar
+### 2b. Conectar o Premiere
 
-Ver **[SETUP-MCP.md](SETUP-MCP.md)**. É o passo que mais trava.
+Ver **[SETUP-MCP.md](SETUP-MCP.md)**.
 
-**O Higgsfield tem que ser adicionado como conector no claude.ai, NÃO com `claude mcp add`.** Pelo caminho local o OAuth tenta redirecionar para `localhost` e falha com `invalid_request: redirect_uri` — em qualquer máquina, em qualquer porta.
+São **dois** servidores, e eles somam. O **Tools PRO** roda dentro do painel do Editor Black Belt, em `127.0.0.1`, sem login — é quem opera a timeline, e leva 2 minutos para ligar. O **Higgsfield** é nuvem, precisa de conector no claude.ai, e é o único que **gera** imagem e vídeo.
+
+Comece pelo Tools PRO: é o que não trava. O `invalid_request: redirect_uri` é exclusivo do Higgsfield — o Tools PRO não tem OAuth.
 
 Para diagnosticar: `bash diagnostico.sh`
 
