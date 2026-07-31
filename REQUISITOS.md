@@ -4,10 +4,30 @@ Sem isso a skill instala mas falha ao rodar. Leva ~20 minutos na primeira vez.
 
 ---
 
+## 0. Git — instale ANTES de tudo
+
+O `/plugin marketplace add` **clona um repositório**. Sem git, a instalação para no primeiro passo com esta mensagem:
+
+```
+Failed to add marketplace: Failed to clone marketplace repository:
+Command 'git' not found or is in an unsafe location
+```
+
+| | |
+|---|---|
+| Conferir | `git --version` |
+| macOS | `xcode-select --install` |
+| Windows | `winget install Git.Git` — ou https://git-scm.com |
+
+**No Windows, feche e reabra o VS Code depois de instalar.** O PATH só é lido em processo novo, então o Claude Code continua sem enxergar o git até reiniciar.
+
+---
+
 ## 1. Programas
 
 | Item | Conferir com | Instalar |
 |---|---|---|
+| **Git** | `git --version` | ver seção 0 acima |
 | **Claude Code** | `claude --version` | https://claude.com/claude-code |
 | **Extensão do VS Code** | ícone do Claude na barra lateral | busque "Claude Code" nas extensões |
 | **ffmpeg / ffprobe** | `ffmpeg -version` | mac: `brew install ffmpeg`<br>win: `winget install ffmpeg` |

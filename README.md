@@ -22,6 +22,10 @@ A avatar está numa cozinha que não existe — cenário gerado. Não há stock 
 
 ### 1. Instalar o plugin
 
+> **Precisa de git.** O comando abaixo clona um repositório — sem git ele falha com
+> `Command 'git' not found`. Confira com `git --version`; se faltar:
+> macOS `xcode-select --install` · Windows `winget install Git.Git` (e reabra o VS Code).
+
 Dentro do Claude Code:
 
 ```

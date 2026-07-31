@@ -85,6 +85,7 @@ Assim você olha as marcações, corta o que não quer, e só então gasta.
 
 | | |
 |---|---|
+| **Git** | `git --version` — o plugin é instalado clonando um repositório, sem git não instala |
 | **Premiere Pro** | com o projeto aberto |
 | **Tools PRO 1.2.0+** | painel aberto → *Conectar IA* → *Ligar* → comando colado no terminal |
 | **Claude Code** | reiniciado depois de registrar o MCP |

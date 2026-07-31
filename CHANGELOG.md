@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.1
+
+**Git nos requisitos.** Ele não aparecia em NENHUM documento de instalação — e é o requisito do primeiro passo: `/plugin marketplace add` clona um repositório.
+
+Sem git a instalação para com `Command 'git' not found or is in an unsafe location`, e quem cai nisso não tem como se diagnosticar: o `diagnostico.sh` checa git, mas para tê-lo é preciso clonar o repo, o que exige git.
+
+Inclui o aviso de reabrir o VS Code no Windows — o PATH só é lido em processo novo.
+
+
 ## 1.5.0
 
 **Documentação de uso.** `references/como-pedir-marcacoes.md` — escrita para quem *usa* a automação, não para quem a executa.
