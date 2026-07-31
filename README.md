@@ -51,6 +51,8 @@ Para diagnosticar: `bash diagnostico.sh`
 
 Ver **[COMO-USAR.md](COMO-USAR.md)**.
 
+Para pedir marcações: **[como-pedir-marcacoes.md](skills/editor-automatico-de-broll/references/como-pedir-marcacoes.md)** — o prompt pronto, o que muda o resultado e o checklist de instalação.
+
 ---
 
 ## Atualizar

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.0
+
+**Documentação de uso.** `references/como-pedir-marcacoes.md` — escrita para quem *usa* a automação, não para quem a executa.
+
+Traz o prompt pronto, por que o nome exato da sequência é a parte mais importante (foi o que causou a perda de 17 marcadores num job real), as três coisas que mais mudam o resultado, e o checklist de instalação separando o que é necessário para **marcar** do que só serve para **gerar** b-roll.
+
+O ponto prático: marcar é 100% local. Não precisa de Higgsfield, nem de chave de API — ou seja, dispensa justamente a etapa que mais trava na instalação.
+
+
 ## 1.4.0
 
 **Edição de timeline, e a regra de ler de volta.**

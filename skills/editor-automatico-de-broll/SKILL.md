@@ -188,6 +188,7 @@ pr_timeline_remover  →  {"sequencia":"<nome>", "tipo":"audio", "trilha":<n>}
 A skill começa no body pronto. Para gerar o bruto a partir da copy (copy → áudio → lipsync), ver `references/heygen-lipsync.md`: HeyGen v3 com Avatar V, clone de voz no ElevenLabs, e o caminho alternativo pelo Higgsfield quando o HeyGen recusa a persona.
 
 ## Referências
+- `references/como-pedir-marcacoes.md` — **para o usuário**: o prompt, o que muda o resultado e o que precisa estar instalado
 - `references/mcp-premiere.md` — conectar e operar Premiere/AE, as travas e a convenção de cor. **Ler antes de escrever no Premiere.**
 - `references/armadilhas.md` — falhas silenciosas do Premiere/ffmpeg/Whisper. **Ler antes de montar.**
 - `references/heygen-lipsync.md` — gerar o bruto: TTS, clone de voz, lipsync e motores
