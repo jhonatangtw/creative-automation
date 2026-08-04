@@ -27,7 +27,7 @@ Recebe o **bruto** de um criativo (body de avatar falante em plano único) e dev
 | | O que é | Onde está |
 |---|---|---|
 | **1. UGC 9:16** | body de avatar em plano fixo + inserts de B-roll | este documento |
-| **2. VSL 3D Pixar** | 8–12 min narrados, **tudo gerado**, 40–50 cenas | `references/historia-3d-pixar.md` |
+| **3. VSL 3D Pixar** | 8–12 min narrados, **tudo gerado**, 40–50 cenas | `references/historia-3d-pixar.md` |
 
 Se o material for **locução longa sem avatar filmado**, ou uma timeline já parcialmente editada com vãos a preencher, é o formato 2 — **ler `historia-3d-pixar.md` antes de qualquer coisa.** O que muda não é o acabamento: é o risco central. No formato 1 o risco é o insert não casar com a fala; no formato 2 é **o personagem mudar de rosto entre as cenas**, e a resposta para isso é a imagem-âncora, não o texto do prompt.
 
@@ -48,26 +48,85 @@ Se faltar a referência, seguir o padrão UGC descrito em `references/estilo-ugc
 
 ## Fluxo
 
-### 0. PERGUNTAR qual MCP usar — sempre, antes de qualquer coisa
+### 0. Abertura — o que descobrir e o que perguntar
 
-Dois servidores falam com o Adobe. **Nunca escolher sozinho: perguntar ao usuário.**
+Duas listas, e a ordem importa. **Descobrir primeiro, perguntar depois** — perguntar o que dá para ler no sistema atrasa o trabalho e faz o usuário repetir o que já está na tela.
 
-Antes de perguntar, descobrir quais estão vivos — assim a pergunta vem com informação, não no escuro:
+#### 0a. Descobrir sozinho (uma rodada, tudo junto)
 
 ```
-pr_midia_info      →  Tools PRO respondeu?
-get_host_status    →  Higgsfield respondeu, com ppro: true?
+pr_midia_info          →  Tools PRO vivo? qual projeto e sequência ativa?
+get_host_status        →  Higgsfield MCP vivo, com ppro: true?
+higgsfield account status  →  o CLI está autenticado? qual saldo?
+pr_sequencias_listar   →  quantas sequências? alguma duplicada?
+pr_timeline_listar     →  já existe edição? onde estão os vãos?
+pr_marcadores_info     →  já tem marcador? quantos?
 ```
 
-Então perguntar, dizendo o que está no ar:
+E na pasta da demanda, olhar antes de perguntar:
 
-> **Qual MCP eu uso para operar o Premiere?**
-> - **Tools PRO** — local, ~3 ms, sem login. Marcadores em lote, importar e montar timeline.
-> - **Higgsfield** — nuvem, com login. Mais lento e já caiu no meio do trabalho, mas é o único que **gera** imagem e vídeo.
+```
+folhas de personagem  →  IMAGENS/, PERSONAGENS/, *padrao*.png
+b-roll já gerado      →  VIDEOS/, CENAS*/, *.mp4 soltos
+```
 
-Ponto que precisa ficar claro na pergunta: **o B-roll é gerado no Higgsfield de qualquer jeito.** A escolha é só sobre quem *opera* a timeline. Dá para gerar no Higgsfield e montar no Tools PRO — costuma ser o melhor arranjo.
+Se existirem folhas de personagem, são as âncoras — usar, não criar do zero. Se existir B-roll pronto, conferir também se está **importado no projeto**: arquivo na pasta não é arquivo no bin, e foi por isso que 9 clipes prontos ficaram sem uso em três ADs.
 
-Se nenhum dos dois responder, **avisar e parar.** Nunca editar o `.prproj` direto — ver `armadilhas.md`.
+Isso responde sozinho: se o Premiere está aberto, qual projeto, se já há edição, qual caminho de geração está disponível, e o que de material já existe.
+
+**Dois sinais de alarme para ler com atenção:**
+
+- **Sequência ativa aparecendo duplicada** em `pr_sequencias_listar` costuma ser mais de um projeto aberto. Ver `armadilhas.md`.
+- **Nome de projeto que não bate com a demanda.** Aconteceu de `AD08.prproj` aberto ser outro job com o mesmo nome. Conferir o conteúdo da timeline, não só o nome.
+
+#### 0b. Perguntar — só o que o sistema não conta
+
+Fazer as perguntas **em bloco, de uma vez**, já com o que foi descoberto como contexto.
+
+**1. Onde está o material?**
+> Caminho da pasta da demanda. Costuma ser um Drive compartilhado — o caminho tem acento, espaço e colchete, então copiar inteiro.
+
+**2. Tem a copy do criativo?** — *opcional, deixar em branco se não houver*
+> Link do Google Docs ou caminho do arquivo. Costuma existir e vale muito:
+>
+> - **É a copy que corrige a transcrição.** O Whisper acerta o timing e erra nome próprio — saíram "Stalinger" por Stillingia, "Monjaro" por Mounjaro, "Brickly ash" por Prickly Ash. Regra: **timing do áudio, texto da copy.**
+> - Traz o **brief de edição** ("a edição deve imitar este anúncio aqui"), os **hooks** H1/H2/H3 e o nome dos personagens.
+> - Sem ela dá para trabalhar — a marcação sai da transcrição — mas a legenda não tem contra o que ser conferida, e o nome do produto pode ir errado para a tela.
+
+**3. Qual formato?** — *resposta livre, não oferecer lista fechada*
+> A operação trabalha com cinco formatos (Criativos, VSL, Microleads, Lead, Troca de potes), e dentro de cada um há variações. Perguntar aberto: **"que formato é esse job?"**
+>
+> Dois caminhos já documentados aqui:
+> - **UGC 9:16** — body de avatar em plano fixo + inserts → este documento
+> - **VSL 3D narrada** — 8–12 min, tudo gerado, 40–50 cenas → `historia-3d-pixar.md`
+>
+> **Se a resposta não for nenhum dos dois, não forçar no molde de UGC.** Pedir um job **já feito** desse formato — material de entrada, saída final e o `.prproj` se existir — e deduzir o processo olhando o resultado. Foi assim que o padrão de legenda, ritmo de insert e estilo de corte entraram nesta skill: olhando o `EXEMPLO DE AVATAR.mp4`, não pedindo explicação.
+>
+> Formato novo que se repetir vira **referência própria** em `references/`, como o `historia-3d-pixar.md` — não um `if` a mais no meio do fluxo de UGC.
+
+**4. Até onde vai a entrega?**
+> - só **marcações** na timeline
+> - marcações **+ geração** de B-roll
+> - até o **MP4 final** montado
+>
+> Muda o custo em ordem de grandeza. Marcar é local e de graça; gerar 45 cenas custa ~2.000 créditos.
+
+**5. Gerar pelo MCP do Higgsfield ou pelo CLI?**
+> - **CLI** (`higgsfield`) — independente do conector, não expira, aceita lote e `--json`. **Padrão recomendado.**
+> - **MCP** — mais integrado, mas a sessão expira sem avisar e só volta removendo e readicionando o conector.
+>
+> Se `higgsfield account status` respondeu com saldo, o CLI está pronto — dizer isso na pergunta.
+
+
+> **Gerar sem texto nenhum na tela.** A legenda é feita à mão pelo editor, então nada de letra, subtítulo ou UI legível nos prompts — entra como negativo explícito. Texto gerado por IA sai embolado de qualquer jeito; ver `armadilhas.md`.
+
+> **Padrão de geração: Seedance `fast`, 720p, máximo 15 s por cena.** O `fast` custa 3,5 créditos/s contra 4,5 do `std`, sem perda no QA frame a frame. Mínimo do Seedance é 4 s — cena mais curta gera em 4 s e apara-se no corte.
+
+> **Quem opera a timeline é o Tools PRO.** Não é pergunta, é o padrão: local, ~3 ms, sem login, marcador e clipe em lote. O Higgsfield é quem **gera** imagem e vídeo — as duas coisas somam, não competem. Só cair para as `pr_*` do Higgsfield se o Tools PRO não responder.
+
+> **A conta do Higgsfield é da equipe.** Não é pergunta, é o estado: o teto de **8 jobs Seedance simultâneos** é dividido com os outros — usar fila de 4 e deixar folga. E **nunca medir custo por diferença de saldo**, porque o delta inclui o gasto de quem mais estiver gerando; medir por `higgsfield account transactions`. Detalhe em `armadilhas.md`.
+
+Se nenhum dos dois MCP responder, **avisar e parar.** Nunca editar o `.prproj` direto — ver `armadilhas.md`.
 
 Detalhes, ferramentas e travas em `references/mcp-premiere.md`. **Ler antes de escrever no Premiere.**
 
