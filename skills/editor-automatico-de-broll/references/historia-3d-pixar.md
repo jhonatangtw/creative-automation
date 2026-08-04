@@ -58,12 +58,12 @@ Quando o anúncio já tem edição, a locução costuma estar **picotada em deze
 
 Ler `pr_timeline_listar`, e remontar com ffmpeg usando `inicio`, `duracao` e `entrada` de cada clipe:
 
-```python
-for parte, ini, dur, ent in clipes_A1:
-    subprocess.run(["ffmpeg","-v","error","-ss",str(ent),"-t",str(dur),"-i",src,
-                    "-ac","1","-ar","16000","-c:a","pcm_s16le",out,"-y"])
-# depois concat na ordem
+```bash
+python3 scripts/audio_da_timeline.py --timeline tl.json --midia "<pasta dos audios>" \
+        --out timeline.wav --duracao-esperada 711.28
 ```
+
+O script aborta se a duração não bater — é a trava que impede transcrever um áudio torto.
 
 **Conferir que a duração bate com a da sequência** antes de transcrever. Bateu 711,29 contra 711,28 e 599,67 exato — se não bater, o mapa inteiro sai torto.
 
@@ -71,12 +71,12 @@ for parte, ini, dur, ent in clipes_A1:
 
 Nos três ADs a primeira metade já estava editada e a segunda estava vazia. Marcar só o que falta:
 
-```python
-buracos=[]; ant=0.0
-for i,f in sorted(clipes_V1):
-    if i-ant>0.3: buracos.append((ant,i,i-ant))
-    ant=max(ant,f)
+```bash
+python3 scripts/mapear_vaos.py --timeline tl.json --duracao 711.28 \
+        --transcricao timeline.json --esqueleto marcadores.json
 ```
+
+O `--esqueleto` já corta em cenas de até 15 s casadas com a fala. Os nomes vêm como `(descrever)` de propósito: escrever cada um a partir da narração, senão o editor recebe 47 marcadores idênticos.
 
 No AD02 eram **457 s (64%)**; no AD04, **380 s (63%)**. Descobrir isso antes evita prometer "alguns espaços vazios" e entregar meio anúncio.
 
@@ -127,3 +127,15 @@ Um AD de 10 min com ~45 cenas fica em torno de **2.000 créditos** completo.
 5. Imagens em lote → **QA** → refazer o que caiu
 6. Vídeos em fila de 4 → **QA frame a frame** → refazer
 7. Importar, montar nos marcadores, **ler de volta**
+
+---
+
+## Scripts
+
+| | |
+|---|---|
+| `scripts/audio_da_timeline.py` | reconstrói o áudio como ele toca na timeline, e **aborta se a duração não bater** |
+| `scripts/mapear_vaos.py` | mapeia o que falta de vídeo e gera o esqueleto de marcadores |
+| `scripts/gerar_lote.py` | fila de geração no CLI do Higgsfield — imagens e vídeos, com retry e backoff |
+
+O `gerar_lote.py` roda com **4 workers por padrão**: o teto da conta é 8 e é dividido com a equipe. Ele pula o que já está no índice, então **rodar de novo é seguro** — é assim que se recupera de falha sem regerar o que já saiu.

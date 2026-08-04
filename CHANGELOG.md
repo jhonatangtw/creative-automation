@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.7.1
+
+**Os scripts do formato 2.** Rodaram os tres ADs do LinfaFlow no scratchpad de uma sessao; agora sao codigo da skill.
+
+| | |
+|---|---|
+| `scripts/audio_da_timeline.py` | reconstroi o audio como ele toca na timeline |
+| `scripts/mapear_vaos.py` | mapeia o que falta de video e gera o esqueleto de marcadores |
+| `scripts/gerar_lote.py` | fila de geracao no CLI do Higgsfield, com retry e backoff |
+
+Cada um carrega uma trava que veio de erro real:
+
+- **`audio_da_timeline.py` aborta se a duracao nao bater** com a da sequencia. Locucao picotada em 24 pedacos com offsets diferentes da timecode errado se transcrita dos arquivos originais — e o mapa de marcacao inteiro sai torto. Testado contra o AD02: 711,29 contra 711,28.
+- **`mapear_vaos.py` nunca gera cena acima de 15 s**, o teto do Seedance. Reproduz o AD02 exatamente: 8 vaos, 457,5 s, 64% sem video.
+- **`gerar_lote.py` roda com 4 workers**, nao 8. O teto da conta e dividido com a equipe, e lote grande faz metade falhar calada. Escreve o indice com lock e relendo antes de gravar — dois processos no mesmo JSON ja custaram 7 URLs apagadas. E **pula o que ja esta pronto**, entao rodar de novo e seguro.
+
+Os nomes do esqueleto saem como `(descrever)` de proposito. Marcador precisa dizer o que colocar; 47 marcadores identicos nao ajudam ninguem.
+
+
 ## 1.7.0
 
 **Abertura reescrita: descobrir primeiro, perguntar depois.**
