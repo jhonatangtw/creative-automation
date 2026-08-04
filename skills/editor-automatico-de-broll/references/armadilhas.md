@@ -76,6 +76,10 @@ O certo é **avisar que falta a conexão e parar**. Se o usuário não puder con
 
 **A conexão do plugin cai sozinha.** Duas vezes numa sessão. `get_host_status` antes de cada lote de escrita.
 
+**Sobrescrever mídia no mesmo caminho fica em cache.** Ao corrigir um clipe já importado, salvar com **nome novo** (`_v2`) e reimportar — senão o Premiere continua exibindo a versão antiga.
+
+**Arquivo que existe na pasta não está no projeto.** Nove b-rolls prontos estavam parados nos três ADs simplesmente porque ninguém os importou — `pr_timeline_colocar` responde *"não achei no projeto"*. Conferir com `pr_midia_listar` antes de concluir que o material não existe.
+
 ## Premiere (plugin Higgsfield)
 
 **Interface em PT-BR quebra `pr_set_clip_transform`.** A tool procura o efeito `Motion`, não acha `Movimento`, e retorna `{"updated": false, "changes": {}}` **sem erro**. Usar:
@@ -113,6 +117,37 @@ Os demais presets são 16:9 e geram barras.
 **B-roll não precisa de áudio nativo.** `generate_audio:false` (Veo/Seedance) ou `sound:'off'` (Kling) economiza crédito. O `kling3_0_turbo` nem tem o parâmetro.
 
 ---
+
+---
+
+## Higgsfield — geração em escala (formato VSL 3D)
+
+**O conector MCP expira e não avisa.** `balance` e `show_generations` passam a devolver *session expired*. O caminho que funciona é o **CLI**: `npm i -g @higgsfield/cli` e `higgsfield auth login`. Reautorizar o conector exige remover e readicionar — o CLI é independente disso.
+
+**Teto de 8 jobs Seedance simultâneos, compartilhado com a equipe.** Submeter 39 de uma vez faz 15 falharem com `rate_limit_reached` — e o erro só aparece se você imprimir o retorno do submit. Usar **fila com 4 workers** (submete, espera, pega a próxima) e backoff de 45 s. Deixa metade do teto livre para os outros.
+
+**Duração do Seedance: mínimo 4 s, máximo 15 s.** Marcador de 2,9 s gera em 4 s e apara-se no corte — sobra handle, o que é bom.
+
+**`fast` custa 3,5 créditos/s contra 4,5 do `std`**, em 720p, sem perda visível no QA frame a frame. `mode: fast` só aceita 480p e 720p.
+
+**Corpo humano translúcido é barrado como `nsfw`** no modelo de vídeo — mesmo sendo ilustração médica, e mesmo depois de virar silhueta chapada cinza. O job termina com `status: nsfw` e não gasta. Resolver indo para o abstrato: rede de vasos em macro, sem corpo.
+
+**O frame de estilo com rosto contamina cena sem personagem.** Usar um close do protagonista como referência de render faz ele aparecer como pessoa real em shots de produto e ilustração — aconteceu em 7 cenas de um mesmo AD. Para essas cenas, usar um frame de estilo **sem rosto** (um close de objeto ou de cintura serve) e negativo explícito de pessoas.
+
+**O rótulo do produto some se não for exigido.** O frasco sai como vidro liso. Passar a foto do produto como **primeira** referência e escrever que o rótulo tem de estar de frente, nítido e legível, *"nunca um frasco liso sem rótulo"*. E conferir rótulo no QA — não só rosto.
+
+**Com duas âncoras de personagem no prompt, o modelo pega a errada.** Numa cena de "mulher desconhecida chorando" com a protagonista também referenciada, saiu a protagonista chorando. Quando a cena é de um personagem só, passar **só a âncora dele**.
+
+**Guarda-roupa vaza da âncora.** Se a âncora do "depois" usa o vestido da festa, ele aparece nas semanas anteriores e rouba o impacto da cena da festa. Gerar uma variante casual da mesma âncora.
+
+---
+
+## Conta compartilhada e processos paralelos
+
+**Não medir custo por diferença de saldo.** Numa conta de equipe o delta inclui o gasto dos outros — deu 445 lidos contra 207,5 reais, mais que o dobro. Medir por `higgsfield account transactions`, casando modelo e horário. O extrato vem em UTC.
+
+**Dois processos gravando o mesmo índice JSON se sobrescrevem.** Um script auxiliar leu o arquivo com 33 entradas e gravou de volta com 36, apagando 7 URLs que o lote tinha escrito no meio. Reler o arquivo imediatamente antes de gravar, dentro de um lock. As URLs perdidas dá para recuperar em `higgsfield generate list --json`, casando pelo texto do prompt.
+
 
 ## Se o usuário pedir transição e SFX
 

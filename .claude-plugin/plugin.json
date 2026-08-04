@@ -1,7 +1,7 @@
 {
   "name": "editor-broll",
-  "version": "1.5.1",
-  "description": "Automacao de edicao de criativo UGC 9:16. Do bruto de avatar ao projeto do Premiere montado: B-roll gerado sob medida para o cenario, inserts em casamento verbal-visual, punch-ins, lettering, legenda conferida contra a copy e marcacoes que citam o brief.",
+  "version": "1.6.0",
+  "description": "Automacao de edicao de criativo direct-response em dois formatos: UGC 9:16 com body de avatar e insert de B-roll, e VSL narrada de 8-12 min inteiramente gerada em 3D. Do bruto ao projeto do Premiere montado: B-roll sob medida, consistencia de personagem por imagem-ancora, marcacoes que citam o brief, legenda conferida contra a copy.",
   "author": {
     "name": "H&W Publishing - RO Edicao de Video"
   },
@@ -17,6 +17,10 @@
     "whisper",
     "ffmpeg",
     "criativo",
-    "9x16"
+    "9x16",
+    "vsl",
+    "3d",
+    "seedance",
+    "consistencia-de-personagem"
   ]
 }

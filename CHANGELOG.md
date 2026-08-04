@@ -1,5 +1,45 @@
 # Changelog
 
+## 1.6.0
+
+**Segundo formato: VSL narrada em 3D estilo Pixar.**
+
+A skill nasceu para body de avatar em plano fixo com poucos inserts. A casa produz também um formato onde **não há avatar filmado nenhum** — 8 a 12 minutos de locução e 40 a 50 cenas inteiramente geradas. `references/historia-3d-pixar.md` documenta esse caminho.
+
+Validado nos **AD08, AD02 e AD04** do LinfaFlow: 134 cenas geradas, conferidas e montadas nas três timelines.
+
+**O risco central muda.** No formato UGC é o insert não casar com a fala. Aqui é **o personagem mudar de rosto entre as cenas** — e a resposta não é o texto do prompt. É a **imagem-âncora passada em `--image-references` em toda geração**. Descrever "mulher de 47 anos, cabelo castanho" em 51 prompts produz 51 mulheres diferentes.
+
+Três coisas que só se aprendem fazendo:
+
+- A âncora de **estilo** é separada da de personagem, e para acertar o render da casa tem que ser **um frame do próprio anúncio de referência**. Descrever "estilo Pixar" em texto produz fotorrealismo tipo scan 3D.
+- Os estados **antes** e **depois** são duas âncoras, e a segunda é gerada **a partir da primeira** — senão vira outra atriz e a transformação, que é o que o anúncio vende, perde o sentido.
+- Se a âncora do "depois" usa uma roupa marcante, ela **vaza** para as cenas anteriores. Precisa de uma variante casual.
+
+**Marcação sobre timeline já editada.** Nos três ADs a primeira metade estava pronta e a segunda vazia — 64% e 63% sem vídeo. O fluxo agora mapeia os vãos em vez de tratar a linha inteira, e ganhou um tipo de marcador: **REAPROVEITAR**, para o material já gerado que está parado. Havia 9 clipes prontos que ninguém usava — não estavam nem importados no projeto, e por isso ninguém conseguia arrastá-los.
+
+**Reconstruir o áudio como ele toca na timeline.** Quando a locução está picotada em dezenas de pedaços com offsets diferentes, às vezes em duas trilhas, transcrever os arquivos originais dá timecode errado. Remontar com ffmpeg a partir de `pr_timeline_listar` e conferir que a duração bate antes de transcrever.
+
+**Sincronia vale mais que timeline sem buraco.** Fechar vão encaixando cada clipe onde o anterior termina adiantou cenas em até 9 segundos — a praia da semana três aparecia antes da narração falar dela. Clipe no tempo do seu marcador; antecipar só abaixo de ~1,5 s.
+
+### Armadilhas novas em `armadilhas.md`
+
+Nove do Higgsfield em escala e duas do Premiere. As que mais custaram:
+
+- **Teto de 8 jobs Seedance simultâneos**, compartilhado com a equipe. Lote de 39 faz 15 falharem calado, se você não imprimir o retorno do submit.
+- **Frame de estilo com rosto contamina cena sem personagem** — o protagonista apareceu como pessoa real em 7 cenas de produto.
+- **O rótulo do produto some** se não for exigido de frente e legível. Conferir rótulo no QA, não só rosto.
+- **Corpo humano translúcido é barrado como `nsfw`**, mesmo como ilustração médica.
+- **Não medir custo por diferença de saldo** em conta compartilhada: deu 445 lidos contra 207,5 reais.
+- **Dois processos gravando o mesmo JSON se sobrescrevem** — 7 URLs apagadas, recuperadas pelo histórico.
+
+### O que isso economiza
+
+QA da **imagem** antes de animar. Imagem custa 2 créditos, vídeo de 12 s custa 42. Nos três ADs o QA pegou 13 defeitos: 26 créditos para corrigir contra ~550 se tivessem virado vídeo.
+
+E **Seedance `fast`** em vez de `std`: 3,5 créditos por segundo contra 4,5, sem perda no QA frame a frame.
+
+
 ## 1.5.1
 
 **Git nos requisitos.** Ele não aparecia em NENHUM documento de instalação — e é o requisito do primeiro passo: `/plugin marketplace add` clona um repositório.

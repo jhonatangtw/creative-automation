@@ -19,6 +19,18 @@ Recebe o **bruto** de um criativo (body de avatar falante em plano único) e dev
 
 **Princípio que rege tudo:** a alavanca é o **B-ROLL**, não o efeito. Um body de avatar é um plano travado de 2 minutos — o que segura retenção é ver a pessoa em outro lugar, com outra roupa, fazendo o que ela está narrando. Transição e efeito são enfeite e costumam denunciar a produção. **Corte seco é o padrão.**
 
+
+---
+
+## Dois formatos, dois caminhos
+
+| | O que é | Onde está |
+|---|---|---|
+| **1. UGC 9:16** | body de avatar em plano fixo + inserts de B-roll | este documento |
+| **2. VSL 3D Pixar** | 8–12 min narrados, **tudo gerado**, 40–50 cenas | `references/historia-3d-pixar.md` |
+
+Se o material for **locução longa sem avatar filmado**, ou uma timeline já parcialmente editada com vãos a preencher, é o formato 2 — **ler `historia-3d-pixar.md` antes de qualquer coisa.** O que muda não é o acabamento: é o risco central. No formato 1 o risco é o insert não casar com a fala; no formato 2 é **o personagem mudar de rosto entre as cenas**, e a resposta para isso é a imagem-âncora, não o texto do prompt.
+
 ---
 
 ## Entradas esperadas
@@ -190,6 +202,7 @@ A skill começa no body pronto. Para gerar o bruto a partir da copy (copy → á
 ## Referências
 - `references/como-pedir-marcacoes.md` — **para o usuário**: o prompt, o que muda o resultado e o que precisa estar instalado
 - `references/mcp-premiere.md` — conectar e operar Premiere/AE, as travas e a convenção de cor. **Ler antes de escrever no Premiere.**
+- `references/historia-3d-pixar.md` — **formato 2**: VSL narrada em 3D, âncora de personagem, marcação sobre timeline já editada
 - `references/armadilhas.md` — falhas silenciosas do Premiere/ffmpeg/Whisper. **Ler antes de montar.**
 - `references/heygen-lipsync.md` — gerar o bruto: TTS, clone de voz, lipsync e motores
 - `references/prompts-broll.md` — templates de prompt de B-roll e modelos do Higgsfield
