@@ -1,5 +1,45 @@
 # Changelog
 
+## 1.7.0
+
+**Abertura reescrita: descobrir primeiro, perguntar depois.**
+
+A etapa 0 só perguntava qual MCP usar. Faltava tudo que trava um job de verdade — onde está o material, se existe copy, que formato é — e sobrava pergunta cuja resposta é sempre a mesma.
+
+Agora são **duas listas, nessa ordem**.
+
+**`0a` — descobrir sozinho, numa rodada só:** se o Premiere está aberto e com qual projeto e sequência, se já existe edição e onde estão os vãos, se Tools PRO e Higgsfield respondem, se o CLI está autenticado. E na pasta da demanda: folhas de personagem e B-roll já gerado.
+
+Perguntar o que dá para ler na tela atrasa o trabalho e faz o usuário repetir o óbvio.
+
+Dois sinais de alarme entram aqui, os dois vistos em produção: **sequência ativa duplicada** na listagem costuma ser mais de um projeto aberto; e **nome de projeto batendo com a demanda não garante nada** — um `AD08.prproj` aberto era outro job com o mesmo nome, e só o conteúdo da timeline denunciou.
+
+**`0b` — cinco perguntas, em bloco:**
+
+1. Onde está o material
+2. Tem a copy? *(opcional)*
+3. Qual formato *(resposta livre)*
+4. Até onde vai a entrega
+5. MCP ou CLI do Higgsfield
+
+**O formato é resposta livre, não lista fechada.** A operação trabalha com cinco formatos — Criativos, VSL, Microleads, Lead, Troca de potes — e o que a skill documenta são duas variações dentro de Criativos. Se a resposta não for nenhuma das duas, **não forçar no molde de UGC**: pedir um job já feito daquele formato e deduzir o processo olhando o resultado. Formato que se repetir vira referência própria em `references/`.
+
+**A copy entrou porque é ela que corrige a transcrição.** O Whisper acerta o timing e erra nome próprio — saíram "Stalinger" por Stillingia, "Monjaro" por Mounjaro, "Brickly ash" por Prickly Ash. A regra é **timing do áudio, texto da copy**. Ela ainda traz o brief de edição, os hooks e o nome dos personagens.
+
+### O que deixou de ser pergunta
+
+Quatro coisas viraram **regra fixa**, porque a resposta nunca muda:
+
+- **Quem opera a timeline é o Tools PRO** — o Higgsfield gera, o Tools PRO monta; somam, não competem
+- **A conta do Higgsfield é da equipe** — fila de 4 no teto de 8 jobs Seedance, e nunca medir custo por diferença de saldo
+- **Gerar sem texto nenhum na tela** — a legenda é feita à mão pelo editor
+- **Seedance `fast`, 720p, máximo 15 s** — mínimo do modelo é 4 s
+
+### Manifesto
+
+`marketplace.json` ainda descrevia só o formato UGC — é o texto que a equipe lê na hora de instalar. Corrigido junto com a descrição do plugin.
+
+
 ## 1.6.0
 
 **Segundo formato: VSL narrada em 3D estilo Pixar.**
