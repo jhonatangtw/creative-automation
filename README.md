@@ -4,6 +4,10 @@ Automação de edição de criativo UGC 9:16 da **H&W Publishing**. Roda no Clau
 
 Validada em produção nos criativos **AD01** e **AD05** do LeafTide.
 
+📘 **[MANUAL-DO-TIME.md](MANUAL-DO-TIME.md)** — instalação, comandos e o que fazer quando trava.
+
+**Comandos:** `/marcar-vsl` · `/broll-narrativo` · `/fechar-lacunas` · `/conferir-broll`
+
 ---
 
 ## O que ela resolve

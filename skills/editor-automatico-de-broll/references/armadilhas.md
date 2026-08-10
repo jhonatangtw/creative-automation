@@ -159,3 +159,59 @@ No Mac o path tem Unicode decomposto (NFD) — buscar com `find -iname`, nunca c
 - Usar só a janela útil do clipe de flash (medir luminância frame a frame; costuma ser preto nas pontas).
 - Alinhar o **pico** do flash e o **impacto** do whoosh no frame do corte, não o início do arquivo.
 - Whoosh a `volume=0.60` dá ~+3,5 dB no corte — audível sem cobrir a voz. `0.30` é baixo demais.
+
+## Geração de imagem — o que o modelo faz por conta própria (AD04 Crowned)
+
+**Prompt de montagem vira colagem.** `"montage of"`, `"three short inserts"`, `"intercut framing"`,
+`"then cut to"` produzem **painéis empilhados** dentro do quadro vertical — cada painel é uma tira
+horizontal. Foi exatamente isso que o cliente leu como *"tem muito footage em 16x9"*, embora todos
+os arquivos fossem 720×1280.
+→ **Um prompt = um plano.** Beat que pede várias imagens vira **takes separados**.
+
+**Composição girada 90°.** O modelo compõe em paisagem e encaixa no quadro vertical: a personagem
+deitada de lado. É literalmente conteúdo 16:9 espremido no 9:16.
+→ Trava explícita: *"the camera is in PORTRAIT orientation, subject UPRIGHT and VERTICAL, head
+toward the top edge, do NOT rotate the composition."*
+
+**O gerador embeleza o defeito que a copy narra.** Pedido "cabelo ralo, risca larga, couro à mostra"
+devolveu um chanel cheio — num anúncio cujo nicho é queda de cabelo, a abertura não mostrava o
+problema.
+→ **Regra do ângulo:** o que precisa ser *provado* no corpo exige **ângulo alto sobre a região**.
+Retrato frontal na altura dos olhos não carrega essa informação.
+→ E **adjetivo agressivo não resolve**: `severe`, `unflattering`, `bare scalp` devolveram outra
+pessoa, mais velha e com calvície de padrão masculino. Quebra a identidade.
+
+**Nano Banana recusa desenhar falha/calvície**, inclusive em desenho infantil — devolvia todas as
+figuras com cabelo, duas tentativas seguidas.
+→ **`gpt_image_2`** obedece "deixe a cabeça em branco". **Desenho e gráfico vão nele.**
+
+**Cor de cabelo escapa** no meio de uma sequência.
+→ Travar na âncora com negativa: `ASH-WHITE SILVER-GREY hair (never brown, never auburn)`.
+
+**Texto queimado.** Vieram legendas inventadas ("Are you sure, dear?") e tarjas com nome de
+personagem, mesmo com `no text` no prompt. Confira — não confie na trava.
+
+**Conferir imagem antes de animar.** Vídeo custa **11×** uma imagem (22,5 contra 2 créditos).
+No AD04 o QC pegou 7 reprovados em 41 na primeira rodada e 8 em 151 na segunda.
+
+## Seedance — entrada de imagem
+
+**Job id de imagem não serve como entrada.** O erro fala de papéis de mídia e lista job types de
+vídeo. `--image-references` também erra nesse caso.
+→ **`--start-image` com caminho de arquivo local.** A CLI faz o upload.
+
+Falha de validação **não cobra** — as 41 primeiras tentativas custaram 0.
+
+## Premiere — as duas que mais custaram
+
+**Timeout de 120s do Tools PRO NÃO é falha.** É o Premiere ainda executando. Retentativa empilha
+trabalho: travou o app por ~25 min a 100% de CPU e **desfez a escala de 60 clipes** já ajustados.
+→ **Espere. Leia o estado. Só repita o que a leitura provar que faltou.**
+
+**`setScaleToFrameSize()` mente.** Retorna OK e **não altera clipe que já está na timeline** — só o
+padrão de futuras inserções.
+→ Aplique em `Movimento › Escala` (PT-BR) por clipe e **leia de volta**.
+Vídeo 720×1280 em sequência 1080×1920 → `150`. Imagem 1536×2752 → `70.31`.
+
+**Limite de 100 clipes** por `pr_timeline_colocar`. **Importar 151 arquivos de uma vez** trava o
+Premiere ~15 min conformando — importe em lotes de 50.

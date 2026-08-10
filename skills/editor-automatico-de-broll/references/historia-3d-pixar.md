@@ -139,3 +139,49 @@ Um AD de 10 min com ~45 cenas fica em torno de **2.000 créditos** completo.
 | `scripts/gerar_lote.py` | fila de geração no CLI do Higgsfield — imagens e vídeos, com retry e backoff |
 
 O `gerar_lote.py` roda com **4 workers por padrão**: o teto da conta é 8 e é dividido com a equipe. Ele pula o que já está no índice, então **rodar de novo é seguro** — é assim que se recupera de falha sem regerar o que já saiu.
+
+---
+
+## Cobertura da timeline (AD04 Crowned)
+
+Um take por marcador **não cobre nada**: no AD04 deu 31% da timeline. A conta é:
+
+```
+takes do marcador = ceil(duração / 5.03)     # Seedance entrega 5,04 s
+```
+
+10:54 de VO exigiram **151 takes** para cobertura total. Marcadores longos concentram o volume —
+o de 59,7 s sozinho levou 12.
+
+## As travas de prompt, em todo plano
+
+```
+ONE SINGLE continuous full-bleed vertical frame filling the whole image. NOT a collage, NOT
+split-screen, no panels, no side-by-side, no stacked images, no borders, no letterbox bars,
+no text, no subtitles, no captions, no watermark.
+
+IMPORTANT: the camera is in PORTRAIT orientation. The subject stands or sits UPRIGHT and VERTICAL,
+head toward the top edge and body toward the bottom edge. Do NOT rotate or tilt the composition.
+```
+
+## Animar
+
+```
+higgsfield generate create seedance_2_0 --prompt "<movimento>" \
+  --start-image /caminho/plano.png --aspect_ratio 9:16 --resolution 720p \
+  --duration 5 --generate_audio false --mode std --wait --json
+```
+
+`--generate_audio false` sempre — a trilha já existe. O prompt descreve **movimento**, não
+aparência: a imagem já carrega o visual. 6 workers em paralelo.
+
+## Enquadramentos espelhados
+
+Escolha 2–3 pares que se repetem **idênticos** em momentos distantes. É a assinatura do filme e
+entrega o antes/depois sem split-screen nem cartela:
+
+```
+abertura ↔ fecho     mesma janela, mesma roupa, mesmo movimento de câmera
+o espelho            repetido idêntico depois da virada
+o objeto do gancho   revisitado no fim, transformado
+```

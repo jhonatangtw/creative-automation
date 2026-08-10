@@ -1,5 +1,48 @@
 # Changelog
 
+## 1.8.0
+
+**O que o AD04 Crowned ensinou, mais os comandos e o manual do time.**
+
+Quatro comandos em `commands/`: `/marcar-vsl`, `/broll-narrativo`, `/fechar-lacunas`,
+`/conferir-broll`. E o **`MANUAL-DO-TIME.md`** — instalacao, uso, custo e o que fazer quando trava,
+escrito para quem opera.
+
+O formato 2 rodou de ponta a ponta num AD de 10:54 com locucao cantada: 75 marcadores, 151 planos
+gerados, animados e montados, cobertura 100%. O que apareceu:
+
+**Prompt de montagem vira colagem.** "montage of", "three inserts", "intercut framing" produzem
+paineis empilhados dentro do quadro vertical — cada painel uma tira horizontal. Foi isso que o
+cliente leu como "tem muito footage em 16x9", com todos os arquivos em 720x1280. Um prompt = um
+plano; beat com varias imagens vira takes separados.
+
+**O modelo tambem gira a composicao 90°** e encaixa paisagem no quadro vertical. Trava de retrato
+explicita resolve.
+
+**O gerador embeleza o defeito que a copy narra.** Queda de cabelo nao le em retrato frontal — so
+angulo alto sobre a regiao. E adjetivo agressivo (`severe`, `bare scalp`) nao resolve: devolve outra
+pessoa e quebra a identidade.
+
+**Nano Banana recusa desenhar falha**, ate em desenho infantil. Desenho e grafico vao no
+`gpt_image_2`.
+
+**Seedance so aceita `--start-image` com caminho local** — job id de imagem da erro de papel de
+midia.
+
+**Cobertura:** `takes = ceil(duracao / 5.03)`. Um take por marcador cobre 31% da timeline.
+
+**Timeout de 120s do Tools PRO nao e falha** — e o Premiere ainda executando. Retentativa empilha
+trabalho: travou o app por 25 min a 100% de CPU e desfez a escala de 60 clipes ja ajustados. Esperar
+e ler o estado.
+
+**`setScaleToFrameSize()` nao altera clipe que ja esta na timeline**, so o padrao de futuras
+insercoes. Aplicar em Movimento > Escala e ler de volta.
+
+**Conferir imagem antes de animar:** video custa 11x uma imagem. O QC pegou 7 de 41 na primeira
+rodada e 8 de 151 na segunda.
+
+Novos: `references/marcacao.md`, `scripts/qc_colagem.py`, `scripts/cep.py`.
+
 ## 1.7.1
 
 **Os scripts do formato 2.** Rodaram os tres ADs do LinfaFlow no scratchpad de uma sessao; agora sao codigo da skill.

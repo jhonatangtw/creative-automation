@@ -267,3 +267,7 @@ A skill começa no body pronto. Para gerar o bruto a partir da copy (copy → á
 - `references/prompts-broll.md` — templates de prompt de B-roll e modelos do Higgsfield
 - `references/estilo-ugc.md` — o padrão visual UGC extraído da referência aprovada
 - `references/config.md` — formato do `edicao.json`
+
+- `references/marcacao.md` — formato dos marcadores de trecho, cores e a regra de cobertura
+- `scripts/qc_colagem.py` — detector de colagem, letterbox e rotação nas imagens geradas
+- `scripts/cep.py` — ExtendScript no Premiere pela porta de debug CEP (o que o Tools PRO não faz)
