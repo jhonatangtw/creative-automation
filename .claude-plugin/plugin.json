@@ -1,7 +1,7 @@
 {
   "name": "editor-broll",
-  "version": "1.8.0",
-  "description": "Automacao de edicao de criativo direct-response em dois formatos: UGC 9:16 com body de avatar e insert de B-roll, e VSL narrada de 8-12 min inteiramente gerada em 3D. Do bruto ao projeto do Premiere montado: B-roll sob medida, consistencia de personagem por imagem-ancora, marcacoes que citam o brief, legenda conferida contra a copy.",
+  "version": "1.9.0",
+  "description": "Automacao de edicao de criativo direct-response em dois formatos (UGC 9:16 com body de avatar, e VSL narrada de 8-12 min gerada em 3D), agora com 5 agentes executores: decupagem de audio, geracao de planos em paralelo por AD, QC visual do lote, escrita segura no Premiere e auditoria contra o briefing.",
   "author": {
     "name": "H&W Publishing - RO Edicao de Video"
   },
@@ -21,6 +21,12 @@
     "vsl",
     "3d",
     "seedance",
-    "consistencia-de-personagem"
+    "consistencia-de-personagem",
+    "agentes",
+    "subagentes",
+    "qc",
+    "auditoria",
+    "kling",
+    "paralelo"
   ]
 }

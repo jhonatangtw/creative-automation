@@ -8,10 +8,13 @@ Como instalar e como usar. Escrito para quem vai **operar**, não para quem cons
 
 Duas frentes, escolhidas pelo tipo de material que você tem na mão:
 
-| Você tem | Use | O que sai |
+| Você tem | Formato | O que sai |
 |---|---|---|
-| Body de avatar falando, plano fixo | `editor-broll` | Criativo editado com inserts, punch-in e legenda |
-| Só a locução (VSL cantada, storytelling longo) | `broll-narrativo-pixar` | O criativo inteiro em imagem, do 0 ao fim |
+| Body de avatar falando, plano fixo | 1 — UGC 9:16 | Criativo editado com inserts, punch-in e legenda |
+| Só a locução (VSL cantada, storytelling longo) | 2 — VSL 3D | O criativo inteiro em imagem, do 0 ao fim |
+
+Os dois formatos vivem na **mesma skill** (`editor-automatico-de-broll`) — não são skills
+separadas.
 
 A segunda é a nova. Validada no **AD04 Crowned** — 10:54 de VO cantada viraram 151 planos gerados,
 animados e montados, cobrindo 100% da timeline.
@@ -103,6 +106,62 @@ visual, texto queimado, e conferência técnica com ffprobe.
 
 ---
 
+## Agentes
+
+Skill é **conhecimento**. Agente é **braço que executa com contexto próprio** — ele trabalha
+numa janela separada e te devolve só a conclusão. É isso que deixa o trabalho pesado rodar
+em paralelo sem entupir a sua conversa.
+
+| Agente | O que faz |
+|---|---|
+| `decupador` | áudio → mede o piso de ruído daquela voz → corte em fronteira de palavra → JSON |
+| `gerador-de-planos` | recebe as cenas de **um** AD, gera imagem-âncora e anima, devolve os caminhos |
+| `qc-visual` | abre o lote e devolve **só os reprovados** com o motivo |
+| `premiere-executor` | toda escrita no Premiere, com a disciplina do timeout |
+| `auditor-de-entrega` | confere o job contra o briefing lendo tudo de volta |
+
+### Você não chama o agente — você descreve o trabalho
+
+O Claude despacha. Os agentes **não veem a sua conversa**: o briefing quem monta é ele, com o
+que você deu. Três formas:
+
+```
+Decupa esses 12 áudios da pasta X          → vai pro decupador
+Usa o premiere-executor pra colocar na V2  → força um específico
+Job novo: copy em [link], pasta em [X],
+6 ADs. Marca, gera e monta.                → ele encadeia os cinco
+```
+
+### O que muda o resultado
+
+**1. Nome exato da sequência.** Sem isso o `premiere-executor` escreve na sequência errada.
+Copie da aba do Premiere.
+
+**2. A copy junto.** Corrige erro de transcrição e revela o que foi escrito mas não gravado.
+
+**3. O elenco descrito uma vez, com detalhe.** Idade, rosto, roupa e **um adereço fixo**
+(anel, brinco, cardigã). O adereço é o que faz reconhecer o personagem entre planos
+distantes — e é a âncora que o `gerador-de-planos` usa.
+
+Exemplo de pedido bom:
+
+> Marca a sequência `body AD02`. Copy no doc [link]. A protagonista é uma mulher de 58 anos,
+> cabelo grisalho curto, óculos de leitura pendurado no pescoço — o óculos é a âncora.
+> Depois gera os b-rolls e me manda o QC antes de montar.
+
+### Rodam em paralelo
+
+Um `gerador-de-planos` por AD. Oito ADs saem juntos em vez de fila única. Eles rodam em
+background — você continua conversando enquanto trabalham.
+
+### O auditor só aponta
+
+`auditor-de-entrega` nunca conserta. Ele reporta o número lido de volta e o que está fora;
+quem arruma é o `premiere-executor`. E ele declara explicitamente **o que não conseguiu
+verificar** — relatório que esconde o não-verificado é pior que nenhum.
+
+---
+
 ## Como pedir bem
 
 Três coisas mudam mais o resultado do que qualquer outra:
@@ -167,7 +226,14 @@ região**; retrato frontal não carrega essa informação.
 ## Onde ficam as coisas
 
 ```
-skills/broll-narrativo-pixar/
+agents/                           os 5 executores (ver seção Agentes)
+├── premiere-executor.md
+├── gerador-de-planos.md
+├── qc-visual.md
+├── decupador.md
+└── auditor-de-entrega.md
+
+skills/editor-automatico-de-broll/
 ├── SKILL.md                      o fluxo e os portões
 ├── references/
 │   ├── armadilhas.md             tudo que já deu errado, e o porquê

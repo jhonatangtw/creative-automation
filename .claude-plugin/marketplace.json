@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "editor-broll",
-      "description": "Edita criativo direct-response e marca a timeline do Premiere. Dois caminhos documentados: UGC 9:16 com body de avatar em plano fixo e inserts de B-roll; e VSL narrada de 8-12 min inteiramente gerada em 3D, com consistencia de personagem por imagem-ancora. Legenda conferida contra a copy, marcacoes que citam o brief, projeto do Premiere editavel.",
+      "description": "Automacao de edicao de criativo direct-response em dois formatos (UGC 9:16 com body de avatar, e VSL narrada de 8-12 min gerada em 3D), agora com 5 agentes executores: decupagem de audio, geracao de planos em paralelo por AD, QC visual do lote, escrita segura no Premiere e auditoria contra o briefing.",
       "author": {
         "name": "H&W Publishing"
       },

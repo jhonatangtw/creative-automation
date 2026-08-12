@@ -1,5 +1,41 @@
 # Changelog
 
+## 1.9.0
+
+**Cinco agentes executores — a camada que faltava.**
+
+Ate aqui o plugin tinha conhecimento (skills) e atalhos (commands), mas nao tinha **braco**.
+Agora tem `agents/`: cada um roda em contexto proprio, em paralelo, e devolve so a conclusao.
+
+| Agente | Papel |
+|---|---|
+| `decupador` | audio -> piso de ruido medido -> corte em fronteira de palavra -> JSON |
+| `gerador-de-planos` | um por AD, em paralelo: imagem-ancora -> Kling/Seedance -> caminhos |
+| `qc-visual` | devolve so os IDs reprovados com o motivo |
+| `premiere-executor` | toda escrita no Premiere, com a disciplina do timeout |
+| `auditor-de-entrega` | confere contra o briefing lendo tudo de volta |
+
+Cada agente carrega **o erro concreto que o justifica**, nao conselho generico. Sai do job
+SlimSoda (8 ADs, 212 b-rolls, 408 marcadores):
+
+- **`--wait` do CLI Higgsfield desiste antes do job terminar** sob concorrencia e parece falha
+  do modelo. Com `--wait-timeout 50m --wait-interval 20s`: de 23 videos em 90 min para
+  **41 em 10 min, zero falhas**.
+- **Timeout de 120s do Tools PRO nao e falha** — reenviar empilha trabalho, travou o Premiere
+  25 min e desfez a escala de 60 clipes ja corretos.
+- **O detector de colagem da muito falso positivo**: 36 suspeitos, 4 defeitos reais. Confirmar
+  no olho antes de regerar.
+- **A fala transcrita dentro do prompt vira legenda queimada** no quadro.
+- **Em historia 3D o modelo larga o estilo** nos planos de ambiente e escorrega para fotorreal
+  e noir anos 40 — toda cena precisa de ancora de personagem, inclusive figurante.
+- **Limiar de silencio fixo come silaba**: medir o piso de ruido daquela voz antes de cortar.
+- **Vazio do whisper-large-v3 nao prova ausencia de voz** — um lote inteiro com fala voltou
+  vazio; o `medium` local achou tudo.
+
+Tambem: `MANUAL-DO-TIME.md` ganhou a secao **Agentes** (como orientar, o que muda o resultado)
+e corrigiu duas referencias a uma skill `broll-narrativo-pixar` que nao existe mais — os dois
+formatos vivem na mesma skill desde a 1.8.0.
+
 ## 1.8.0
 
 **O que o AD04 Crowned ensinou, mais os comandos e o manual do time.**
